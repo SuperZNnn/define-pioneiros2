@@ -1,0 +1,51 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model reg_users {
+  origin_id    Int     @id
+  login        String  @db.VarChar(255)
+  password     String  @db.VarChar(200)
+  display_name String? @db.VarChar(50)
+  is_old       Int     @default(0)
+  users        users   @relation(fields: [origin_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "reg_users_ibfk_1")
+}
+
+model token_manager {
+  owner_id   Int
+  token      String   @id @db.VarChar(10)
+  token_type Int
+  expires_at DateTime @db.DateTime(0)
+  users      users    @relation(fields: [owner_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "token_manager_ibfk_1")
+
+  @@index([owner_id], map: "owner_id")
+}
+
+model users {
+  id                   Int             @id @default(autoincrement())
+  fullname             String          @db.VarChar(255)
+  cpf                  String?         @db.VarChar(14)
+  rg                   String?         @db.VarChar(10)
+  telefone             String?         @db.VarChar(14)
+  telefone_responsavel String?         @db.VarChar(14)
+  email                String?         @db.VarChar(255)
+  email_responsavel    String?         @db.VarChar(255)
+  responsavel          String?         @db.VarChar(255)
+  mae                  String?         @db.VarChar(255)
+  pai                  String?         @db.VarChar(255)
+  nascimento           DateTime        @db.Date
+  funcao               String          @db.VarChar(30)
+  genero               String          @db.VarChar(1)
+  photo                Bytes?
+  reg                  Int             @default(0)
+  status               Int             @default(1)
+  sgc_code             Int             @default(0)
+  reg_users            reg_users?
+  token_manager        token_manager[]
+}

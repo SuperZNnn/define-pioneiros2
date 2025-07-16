@@ -1,0 +1,71 @@
+const ssoPrefix = 'http://localhost:5174'
+
+export const FinishRegisterMessage = (name: string, token: string, responsavel: boolean) => {
+    return `
+    <html>
+<body style="margin: 0; padding: 0;">
+    <div style="width: 100%; background-color: #f2f2f2; padding: 20px 0;">
+        <section style="width: 450px; background-image: url('https://pioneirosdoadvento.com/assets/images/sso_bg.jpg'); background-position: center; background-size: cover; margin: auto; padding: 20px; border-radius: 8px;">
+            <h1 style="font-family: sans-serif; color: #dadada; background-color: rgba(0,0,0,.5); text-align: center; padding: 10px; border-radius: 8px;">Pioneiros do Advento</h1>
+
+            <img alt="user" src="https://pioneirosdoadvento.com/assets/images/logo.png" style="background-color: #dadada;display: block; width: 200px; aspect-ratio: 1/1; object-fit: cover; border-radius: 50%; border: 4px solid #177337; margin: 20px auto;">
+
+            <div style="background-color: rgba(255,255,255,0.8); padding: 15px; border: 3px solid rgba(18,166,40,0.5); border-radius: 8px; text-align: center;">
+                <p style="font-family: sans-serif;">${responsavel?`Olá querido responsável, <b>${name} deseja se registrar na nossa plataforma</b>`:`Olá <b>${name}</b>`}, para continuar com seu processo de registro, clique no botão abaixo:</p>
+
+                <a href="${ssoPrefix}/finishregister/${token}/${encodeURIComponent(name)}" style="text-decoration: none;">
+                    <button style="border-radius: 8px; padding: 10px 20px; border: none; font-family: sans-serif; cursor: pointer; transition: .2s; width: 100%; background-color: #177337; color: white;">
+                        Finalizar registro
+                    </button>
+                </a>
+
+                <p style="font-family: sans-serif; margin-top: 10px;">
+                    Ou acesse:<br>
+                    <a href="${ssoPrefix}/finishregister/${token}/${encodeURIComponent(name)}" style="color: blue; word-break: break-all;">https://pioneirosdoadvento.com/finishregister/${token}/${encodeURIComponent(name)}</a>
+                </p>
+            </div>
+
+            <div style="width: 200px; background-color: rgba(0,0,0,.5); border-radius: 8px; padding: 10px; margin: 20px auto 0 auto; text-align: center;">
+                <img src="https://pioneirosdoadvento.com/assets/images/logo.png" alt="logo" style="width: 60px; aspect-ratio: 1/1;">
+            </div>
+        </section>
+    </div>
+</body>
+</html>
+`
+}
+
+export const ForgotPasswordMessage = (name: string, token: string, responsavel: boolean) => {
+    return `
+        <html>
+<body style="margin: 0; padding: 0;">
+    <div style="width: 100%; background-color: #f2f2f2; padding: 20px 0;">
+        <section style="width: 450px; background-image: url('https://pioneirosdoadvento.com/assets/images/sso_bg.jpg'); background-position: center; background-size: cover; margin: auto; padding: 20px; border-radius: 8px;">
+            <h1 style="font-family: sans-serif; color: #dadada; background-color: rgba(0,0,0,.5); text-align: center; padding: 10px; border-radius: 8px;">Pioneiros do Advento</h1>
+
+            <img alt="user" src="https://pioneirosdoadvento.com/assets/images/logo.png" style="background-color: #dadada;display: block; width: 200px; aspect-ratio: 1/1; object-fit: cover; border-radius: 50%; border: 4px solid #177337; margin: 20px auto;">
+
+            <div style="background-color: rgba(255,255,255,0.8); padding: 15px; border: 3px solid rgba(18,166,40,0.5); border-radius: 8px; text-align: center;">
+                <p style="font-family: sans-serif;">${responsavel?`Olá querido responsável, <b>${name} esqueceu a senha da nossa plataforma</b>`:`Olá <b>${name}</b>`}, para recuperar a senha, clique no botão abaixo:</p>
+
+                <a href="${ssoPrefix}/resetpassword/${token}/${encodeURIComponent(name)}" style="text-decoration: none;">
+                    <button style="border-radius: 8px; padding: 10px 20px; border: none; font-family: sans-serif; cursor: pointer; transition: .2s; width: 100%; background-color: #177337; color: white;">
+                        Recuperar senha
+                    </button>
+                </a>
+
+                <p style="font-family: sans-serif; margin-top: 10px;">
+                    Ou acesse:<br>
+                    <a href="${ssoPrefix}/resetpassword/${token}/${encodeURIComponent(name)}" style="color: blue; word-break: break-all;">https://pioneirosdoadvento.com/resetpassword/${token}/${encodeURIComponent(name)}</a>
+                </p>
+            </div>
+
+            <div style="width: 200px; background-color: rgba(0,0,0,.5); border-radius: 8px; padding: 10px; margin: 20px auto 0 auto; text-align: center;">
+                <img src="https://pioneirosdoadvento.com/assets/images/logo.png" alt="logo" style="width: 60px; aspect-ratio: 1/1;">
+            </div>
+        </section>
+    </div>
+</body>
+</html>
+    `
+}

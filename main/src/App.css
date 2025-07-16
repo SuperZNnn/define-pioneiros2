@@ -1,0 +1,11 @@
+html{
+    scroll-behavior: smooth;
+}
+
+@font-face{
+  font-family: 'NeueUltraboldLocal';
+  src: url('/assets/fonts/NeueMachina-Ultrabold.otf')
+}
+.main-title{
+  font-family: 'NeueUltraboldLocal' !important;
+}

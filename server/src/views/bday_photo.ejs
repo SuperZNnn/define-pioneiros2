@@ -1,0 +1,23 @@
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feliz Aniversário</title>
+
+    <link rel="stylesheet" href="https://sso.pioneirosdoadvento.com/shared/App.css">
+    <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+    <main class="wrapper">
+        <img class="profile-bg" src="<%= photo %>">
+        <img class="background-texture" src="<%= backgroundTexture.url %>" style="opacity: <%= backgroundTexture.opacity %>">
+        <img class="border" src="/assets/images/border.png">
+
+        <h2 class="main-title age"><span><%= idade %></span> <span>Anos</span></h2>
+        <img class="main-image" src="<%= photo %>">
+
+        <h1 class="main-title"><span>Feliz</span> <span>Aniversário</span><br></h1>
+        <h1 class="main-title" style="margin-top: 75px;"><span><%= name %></span></h1>
+    </main>
+</body>
+</html>

@@ -1,0 +1,61 @@
+@font-face{
+  font-family: 'NeueUltraboldLocal';
+  src: url('./fonts/NeueMachina-Ultrabold.otf')
+}
+.main-title{
+  font-family: 'NeueUltraboldLocal' !important;
+}
+
+.wrapper, .background-texture, .profile-bg{
+  background-size: cover;
+  background-position: center;
+  width: 1500px;
+  height: 2100px;
+}
+
+.background-texture, .profile-bg, .border{
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.profile-bg{
+  aspect-ratio: 5/7;
+  object-fit: cover;
+  filter: blur(1rem);
+}
+
+.main-image{
+  width: 1313px;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  object-position: top;
+  position: relative;
+  border-radius: 50%;
+  left: 750px;
+  transform: translate(-50%);
+  top: 125px;
+  border: 20px solid var(--fourth-color);
+}
+.age{
+  position: absolute;
+  font-size: 100px;
+  z-index: 1;
+  color: var(--white);
+  left: 750px;
+  transform: translate(-50%);
+  top: 60px;
+}
+
+span{
+  background-color: var(--first-color);
+  padding: 1vh;
+  box-shadow: 20px 20px 0px rgba(0,0,0,.5);
+}
+h1{
+  position: relative;
+  z-index: 2;
+  top: 175px;
+  font-size: 100px;
+  color: var(--white)!important;
+}
