@@ -11,7 +11,7 @@ const HomePage = () => {
             
         }
         else{
-            window.location.href = 'https://www.google.com'
+            window.location.href = 'https://pioneirosdoadvento.com'
         }
     }, [])
 

@@ -9,6 +9,7 @@ import jwt from 'jsonwebtoken'
 import { allowedOrigins } from "..";
 import { verifyIdToken } from "../services/firebase";
 import multer from 'multer'
+import { internalCreateToken } from "../services/TokenService";
 
 const upload = multer().single('photo')
 
@@ -44,108 +45,18 @@ export class SsoController{
         const { userId, type } = req.body
         const { resp } = req.query
 
-        const responsavel = resp === 'true' || resp === '1'
         const tokenType = parseInt(type)
-
-        if (!userId || `${userId}`.length <= 0) {
-            res.status(400).json({ error: 'userId é obrigatório' })
-            return
-        }
-
-        if (![1, 2].includes(tokenType)) {
-            res.status(400).json({ error: 'Tipo de token inválido' })
-            return
-        }
-
         const userIdInt = parseInt(userId)
+        const responsavel = resp === 'true' || resp === '1'
 
-        try {
-            const existingToken = await prisma.token_manager.findFirst({
-                where: {
-                    owner_id: userIdInt,
-                    token_type: tokenType,
-                    expires_at: {
-                        gt: new Date()
-                    }
-                }
-            })
-            if (existingToken) {
-                res.status(400).json({ error: 'Já existe um token válido para este usuário.' })
-                return
-            }
+        const result = await internalCreateToken(userIdInt, tokenType, responsavel)
 
-            const regUser = await prisma.reg_users.findUnique({
-                where: {
-                    origin_id: userIdInt
-                }
-            })
-
-            if (tokenType === 1 && regUser) {
-                res.status(400).json({ error: 'Este usuário já está registrado. Não é possível gerar um token de validação de email.' })
-                return
-            }
-            if (tokenType === 2 && !regUser) {
-                res.status(400).json({ error: 'Este usuário não está registrado. Não é possível gerar um token de recuperação de senha.' })
-                return
-            }
-
-            let tokenExists = true;
-            let token: string = ''
-            while (tokenExists) {
-                token = generateUrlFriendlyToken(10);
-                tokenExists = await prisma.token_manager.findUnique({
-                where: { token },
-                }) !== null;
-            }
-
-            const expiresAt = new Date(Date.now() + 15 * 60 * 1000)
-            const createdToken = await prisma.token_manager.create({
-                data: {
-                    owner_id: userIdInt,
-                    token,
-                    token_type: tokenType,
-                    expires_at: expiresAt
-                }
-            })
-
-            const user = await prisma.users.findUnique({
-                where: {
-                    id: userIdInt
-                },
-                select: {
-                    fullname: true,
-                    email: true,
-                    email_responsavel: true
-                }
-            })
-            if (!user) {
-                res.status(404).json({ error: 'Usuário não encontrado' })
-                return
-            }
-
-            const message = tokenType === 1
-                ? FinishRegisterMessage(user.fullname, createdToken.token, responsavel)
-                : ForgotPasswordMessage(user.fullname, createdToken.token, responsavel)
-
-            const subject = tokenType === 1
-                ? 'Finalize seu registro'
-                : 'Recupere sua senha'
-
-            const email = responsavel?user.email_responsavel:user.email
-            if (!email) {
-                res.status(400).json({ error: 'Usuário não possui e-mail válido para envio.' })
-                return
-            }
-
-            sendEmail(message, subject, email)
-
-            res.status(201).json({
-                message: "Token criado com sucesso"
-            })
+        if (!result.success) {
+            res.status(400).json({ error: result.error })
+            return
         }
-        catch (err) {
-            res.status(500).json({ error: err })
-        }
+
+        res.status(201).json({ message: result.message })
     }
     static async validateCode (req: Request, res: Response) {
         const { token } = req.params

@@ -21,6 +21,7 @@ export const sendEmail = async (message: string, title: string, email: string) =
         })
     }
     catch(err){
+        console.log(err)
         throw err
     }
 }

@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from "react"
-import { ApiRequests } from "../services/api"
+import { ApiRequests, deleteCache } from "../services/api"
 
 type AuthContextType = {
     userId: number | undefined
@@ -72,6 +72,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         try {
             await ApiRequests.DestroySession()
             setUserId(undefined)
+            deleteCache()
         }
         catch (err) {
             setError(err as Error)

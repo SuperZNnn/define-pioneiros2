@@ -1,4 +1,4 @@
-const ssoPrefix = 'http://localhost:5174'
+export const ssoPrefix = 'http://localhost:5174'
 
 export const FinishRegisterMessage = (name: string, token: string, responsavel: boolean) => {
     return `

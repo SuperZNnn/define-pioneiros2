@@ -1,6 +1,10 @@
-import { useState, type ReactNode } from "react"
+import { useEffect, useState, type ReactNode } from "react"
 import { Link } from "react-router-dom"
 import styled from "styled-components"
+import { useAuth } from "../hooks/useAuth"
+import type { User } from "../types/user"
+import { ApiRequests } from "../services/api"
+import { AdmFuncs } from "../pages/admPages/TokensManager"
 
 export const SideBar = ({user, logout}: { user: number | undefined, logout: () => void }) => {
     const [showSidebar, setShowSidebar] = useState<boolean>(false)
@@ -37,6 +41,23 @@ export const SideBar = ({user, logout}: { user: number | undefined, logout: () =
 
 export const LoggedSidebar = () => {
     const [showSidebar, setShowSidebar] = useState<boolean>(false)
+    const [user, setUser] = useState<User>()
+
+    const { getUser } = useAuth()
+
+    useEffect(() => {
+        const fetchData = async () => {
+            ApiRequests.getMember(await getUser()??0)
+            .then(res => {
+                setUser(res.data.user)
+            })
+            .catch(err => {
+                console.log(err)
+            })
+        }
+        fetchData()
+    }, [])
+
 
     return (
         <>
@@ -45,15 +66,19 @@ export const LoggedSidebar = () => {
                 <h2 className="second-title" style={{ fontSize: '.8rem' }}>Clube de Desbravadores</h2>
                 <h1 className="main-title" style={{ fontSize: '1rem' }}>Pioneiros do Advento</h1>
 
-                <BurgerList title="Administrador">
-                    <Link to='/tokenmanager'><button className="btn noradius" style={{ width: '100%', height: '5vh' }}>Gerenciador de Tokens</button></Link>
-                    <a><button className="btn noradius" style={{ width: '100%', height: '5vh' }}>Manutenção Whatsapp</button></a>
-                </BurgerList>
+                {AdmFuncs.includes(user?.funcao??'')?
+                    <BurgerList title="Administrador">
+                        <Link to='/tokenmanager'><button className="btn noradius" style={{ width: '100%', height: '5vh' }}>Gerenciador de Tokens</button></Link>
+                        <a><button className="btn noradius" style={{ width: '100%', height: '5vh' }}>Manutenção Whatsapp</button></a>
+                    </BurgerList>
+                :null}
                 
-                <BurgerList title="Secretaria">
-                    <Link to='/secretaria/membros'><button className="btn noradius" style={{ width: '100%', height: '5vh' }}>Membros</button></Link>
-                    <a><button className="btn noradius" style={{ width: '100%', height: '5vh' }}>Pagamentos</button></a>
-                </BurgerList>
+                {AdmFuncs.includes(user?.funcao??'')?
+                    <BurgerList title="Secretaria">
+                        <Link to='/secretaria/membros'><button className="btn noradius" style={{ width: '100%', height: '5vh' }}>Membros</button></Link>
+                        <a><button className="btn noradius" style={{ width: '100%', height: '5vh' }}>Pagamentos</button></a>
+                    </BurgerList>
+                :null}
             </SidebarStyle>
 
             <BurgerButton
