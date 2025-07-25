@@ -76,13 +76,12 @@ export const LoggedSidebar = () => {
                 {AdmFuncs.includes(user?.funcao??'')?
                     <BurgerList title="Secretaria">
                         <Link to='/secretaria/membros'><button className="btn noradius" style={{ width: '100%', height: '5vh' }}>Membros</button></Link>
-                        <a><button className="btn noradius" style={{ width: '100%', height: '5vh' }}>Pagamentos</button></a>
+                        <a><button className="btn noradius" style={{ width: '100%', height: '5vh' }}>Gerenciador DesbravaPix</button></a>
                     </BurgerList>
                 :null}
 
                 <BurgerList title="Geral" startOpen={true}>
-                    <Link to='/'><button className="btn noradius" style={{ width: '100%', height: '5vh' }}>Pix</button></Link>
-                    <a><button className="btn noradius" style={{ width: '100%', height: '5vh' }}>Ficha Médica</button></a>
+                    <a href='http://localhost:5175'><button className="btn noradius" style={{ width: '100%', height: '5vh' }}>DesbravaPix</button></a>
                     <a><button className="btn noradius" style={{ width: '100%', height: '5vh' }}>Ficha Médica</button></a>
                 </BurgerList>
                 <BurgerList title="Navegação" startOpen={true}>

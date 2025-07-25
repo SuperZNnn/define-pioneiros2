@@ -15,7 +15,8 @@ export type User = {
     genero: string,
     photo?: string,
     reg: number,
-    status: number
+    status: number,
+    pix: string,
 }
 export type DisplayInfo = {
     display_name: string

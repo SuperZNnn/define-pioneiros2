@@ -285,3 +285,19 @@ input.ipt-basic.transparent{
         transform: translate(-50%,0);
     }
 }
+@keyframes modalShow{
+  0%{
+      transform: translateY(-5vh);
+  }
+  100%{
+      transform: translateY(0);
+  }
+}
+@keyframes modalHide{
+  100%{
+      transform: translateY(-5vh);
+  }
+  0%{
+      transform: translateY(0);
+  }
+}

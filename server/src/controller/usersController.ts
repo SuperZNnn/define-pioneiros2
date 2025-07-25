@@ -41,7 +41,8 @@ export class UsersController {
                     reg: true,
                     sgc_code: true,
                     cpf: true,
-                    status: true
+                    status: true,
+                    pix: true
                 },
                 orderBy: {
                     fullname: 'asc'
@@ -79,7 +80,8 @@ export class UsersController {
                         email: user.email?true:false,
                         email_responsavel: user.email_responsavel?true:false,
                         reg: user.reg,
-                        status: user.status
+                        status: user.status,
+                        pix: user.pix
                     }
 
                     if (showPhoto) {

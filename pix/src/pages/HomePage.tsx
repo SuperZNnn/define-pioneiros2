@@ -1,12 +1,16 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import styled from "styled-components"
 import { ApiRequests } from "../services/api"
+import StartLogin from "../components/StartLogin"
+import PixManager from "../components/PixManager"
 
 const HomePage = () => {
+    const [user, setUser] = useState<number>()
+
     useEffect(() => {
         ApiRequests.getSession()
         .then(res => {
-            console.log(res)
+            setUser(res.data.user.userId)
         })
         .catch(err => {
             console.log(err)
@@ -15,7 +19,23 @@ const HomePage = () => {
 
     return (
         <HomePageStyle>
+            
 
+            {user?
+                <PixManager
+                    userId={user}
+                    quitSession={() => {
+                        ApiRequests.DestroySession()
+                        .then(() => {
+                            setUser(undefined)
+                        })
+                        .catch(err => {
+                            console.log(err)
+                        })
+                    }}
+                />:
+                <StartLogin/>
+            }
         </HomePageStyle>
     )
 }
@@ -27,4 +47,8 @@ const HomePageStyle = styled.main`
     background-size: cover;
     width: 100%;
     height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 `

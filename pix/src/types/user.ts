@@ -16,11 +16,5 @@ export type User = {
     photo?: string,
     reg: number,
     status: number,
-    sgc_code: number,
-    pix: string
-}
-export type DisplayInfo = {
-    display_name: string
-    origin_id: number
-    photo?:string 
+    pix: string,
 }

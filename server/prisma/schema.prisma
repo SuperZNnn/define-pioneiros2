@@ -17,6 +17,19 @@ model reg_users {
   users        users   @relation(fields: [origin_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "reg_users_ibfk_1")
 }
 
+model pix_history {
+  transaction_id    Int     @id @default(autoincrement())
+  from              Int
+  to                Int
+  value             Decimal @db.Decimal(10,2)
+
+  from_user         users   @relation("PixFrom", fields: [from], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  to_user           users   @relation("PixTo", fields: [to], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([from])
+  @@index([to])
+}
+
 model token_manager {
   owner_id   Int
   token      String   @id @db.VarChar(10)
@@ -46,6 +59,10 @@ model users {
   reg                  Int             @default(0)
   status               Int             @default(1)
   sgc_code             Int             @default(0)
+  pix                  Decimal         @default(0.00) @db.Decimal(10,2)
+
   reg_users            reg_users?
   token_manager        token_manager[]
+  sent_pix             pix_history[]   @relation("PixFrom")
+  received_pix         pix_history[]   @relation("PixTo")
 }
