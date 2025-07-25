@@ -3,7 +3,6 @@ import Whatsapp, { Client, MessageMedia } from 'whatsapp-web.js'
 import qrcode from 'qrcode'
 import { Router } from 'express';
 import { generateBdayPhoto } from "./generators";
-import { prisma } from "../controller/usersController";
 import { WhatsAppReplys } from "./whatsappReplys";
 
 const client = new Client({

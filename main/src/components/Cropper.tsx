@@ -143,6 +143,12 @@ export const CropperWrapper = styled.div<{ type?: 'secEdit' }>`
         top: 70vh;
     }`:null}
 
+    @media (max-width: 700px){
+        ${({type}) => !type?`
+        top: 99vh;
+        transform: translateY(-50%)`:null}
+    }
+
     .image-cropper{
         animation: fadein .5s ease-in-out forwards;
 

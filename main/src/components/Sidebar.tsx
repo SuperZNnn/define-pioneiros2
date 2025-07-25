@@ -43,7 +43,7 @@ export const LoggedSidebar = () => {
     const [showSidebar, setShowSidebar] = useState<boolean>(false)
     const [user, setUser] = useState<User>()
 
-    const { getUser } = useAuth()
+    const { getUser, logout } = useAuth()
 
     useEffect(() => {
         const fetchData = async () => {
@@ -79,6 +79,18 @@ export const LoggedSidebar = () => {
                         <a><button className="btn noradius" style={{ width: '100%', height: '5vh' }}>Pagamentos</button></a>
                     </BurgerList>
                 :null}
+
+                <BurgerList title="Geral" startOpen={true}>
+                    <Link to='/'><button className="btn noradius" style={{ width: '100%', height: '5vh' }}>Pix</button></Link>
+                    <a><button className="btn noradius" style={{ width: '100%', height: '5vh' }}>Ficha Médica</button></a>
+                    <a><button className="btn noradius" style={{ width: '100%', height: '5vh' }}>Ficha Médica</button></a>
+                </BurgerList>
+                <BurgerList title="Navegação" startOpen={true}>
+                    <Link to='/profile'><button className="btn noradius" style={{ width: '100%',height: '5vh'}}>Perfil</button></Link>
+                    <Link to='/'><button className="btn noradius" style={{ width: '100%',height: '5vh' }}>Início</button></Link>
+                    <a href='/'><button onClick={logout} className="btn noradius" style={{ width: '100%',height: '5vh' }}>Sair</button></a>
+                </BurgerList>
+                
             </SidebarStyle>
 
             <BurgerButton
@@ -89,8 +101,8 @@ export const LoggedSidebar = () => {
     )
 }
 
-const BurgerList = ({children, title}: {children: ReactNode, title: string }) => {
-    const [open, setOpen] = useState<boolean>(false)
+const BurgerList = ({children, title, startOpen}: {children: ReactNode, title: string, startOpen?: boolean }) => {
+    const [open, setOpen] = useState<boolean>(startOpen??false)
 
     const childrenValue = children?.valueOf() as any[]
     
@@ -197,6 +209,7 @@ const BurgerButtonStyle = styled.button`
 const BurgerListStyle = styled.section<{ quant: number }>`
     background-color: var(--second-color);
     border-top: .4vh solid var(--white);
+    border-bottom: .4vh solid var(--white);
 
     h2{
         text-align: center;

@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from "react"
 import styled from "styled-components"
 import { type User } from "../../types/user"
-import { ApiRequests, deleteCache, UserEvents } from "../../services/api"
+import { ApiRequests, deleteCache, setInternal, UserEvents } from "../../services/api"
 import { formatDate, formatInputCPF, formatInputPhone, PhoneStringToNumber } from "../../hooks/useConvert"
 import ModalContainer from "../../components/ModalContainer"
-import { Link, useNavigate, useParams } from "react-router-dom"
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom"
 import { useForm } from "react-hook-form"
 import { FormStyles } from "../ProfilePage"
 import * as Yup from 'yup'
@@ -18,6 +18,7 @@ const MembersListPage = () => {
     const { getUser } = useAuth()
     const { addToast } = useToasts()
     const navigate = useNavigate()
+    const location = useLocation()
 
     const [users, setUsers] = useState<User[]>()
     const [displayList, setDisplayList] = useState<User[]>()
@@ -54,10 +55,10 @@ const MembersListPage = () => {
             const response = await ApiRequests.getAllMembers()
 
             if (Array.isArray(response)){
-                const EveryHasSGC = response.every(user => typeof user.sgc_code !== undefined)
+                const EveryHasSGC = response.every(user => user.sgc_code !== undefined)
                 if (EveryHasSGC){
                     setUsers(response)
-                    setDisplayList(response)
+                    setDisplayList([...response])
                 }
                 else{
                     deleteCache()
@@ -67,7 +68,7 @@ const MembersListPage = () => {
         }
 
         fetchUsers()
-    }, [])
+    }, [location])
 
     return (
         <MembersListPageStyle>
@@ -229,6 +230,8 @@ export const MemberEditModal = () => {
                 photo: prev?.photo||''
             }))
 
+            setInternal(Number(userid), InfoData as User)
+
             addToast({ message: 'Dados alterados com sucesso', type: 'success', time: 3 })
         })
         .catch(err => {
@@ -256,7 +259,7 @@ export const MemberEditModal = () => {
                                 <input {...register("fullname")} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                     if (NameRef.current) NameRef.current.innerHTML = e.target.value
                                 }} className="ipt-basic border" placeholder="Nome completo"/>
-                                <p>{errors.fullname?.message}</p>
+                                <p className="error-message simple-warn">{errors.fullname?.message}</p>
                             </div>
 
                             <div className="input-group noresp">
@@ -271,12 +274,12 @@ export const MemberEditModal = () => {
                                 className="ipt-basic border"
                                 placeholder="CPF"
                                 />
-                                <p>{errors.cpf?.message}</p>
+                                <p className="error-message simple-warn">{errors.cpf?.message}</p>
                             </div>
 
                             <div className="input-group noresp">
                                 <input type="date" {...register("nascimento")} className="ipt-basic border"/>
-                                <p>{errors.nascimento?.message}</p>
+                                <p className="error-message simple-warn">{errors.nascimento?.message}</p>
                             </div>
 
                             <div className="input-group noresp">
@@ -307,12 +310,12 @@ export const MemberEditModal = () => {
 
                             <div className="input-group noresp">
                                 <input {...register("email")} className="ipt-basic border" placeholder="Email"/>
-                                <p>{errors.email?.message}</p>
+                                <p className="error-message simple-warn">{errors.email?.message}</p>
                             </div>
 
                             <div className="input-group noresp">
                                 <input {...register("email_responsavel")} className="ipt-basic border" placeholder="Email do Responsável"/>
-                                <p>{errors.email_responsavel?.message}</p>
+                                <p className="error-message simple-warn">{errors.email_responsavel?.message}</p>
                             </div>
 
                             <div className="input-group noresp">
@@ -361,7 +364,7 @@ const MembersListMember = ({user}: { user: User }) => {
     const [displayUser, setDisplayUser] = useState<User>(user)
 
     return (
-        <section className={`members-row ${displayUser.status === 0?'deactivated':null}`}>
+        <section className={`members-row ${displayUser.status === 0?'deactivated':''}`}>
             <div className="column">
                 <p className="simple-text">{displayUser.sgc_code}</p>
             </div>
@@ -429,6 +432,12 @@ const MembersListPageStyle = styled.main`
         padding: 1vh;
         display: flex;
         gap: 1vh;
+
+        input{
+            @media (max-width: 420px){
+                width: 60%;
+            }
+        }
     }
 
     .members-row{
@@ -460,13 +469,59 @@ const MembersListPageStyle = styled.main`
             border-left: .3vh solid var(--black);
             border-bottom: .3vh solid var(--black);
 
-            &:nth-child(1){width: 20%}
-            &:nth-child(2){width: 30%}
-            &:nth-child(3){width: 15%}
-            &:nth-child(4){width: 15%}
-            &:nth-child(5){width: 20%; border-right: .3vh solid var(--black)}
+            &:nth-child(1){
+                width: 20%;
 
+                @media (max-width: 700px){
+                    width: 25%;
+                }
+                @media (max-width: 550px){
+                    display: none;
+                }
+            }
+            &:nth-child(2){
+                width: 30%;
+                @media (max-width: 550px){
+                    width: 40%;
+                }
+                @media (max-width: 480px){
+                    width: 50%;
+                }
+            }
+            &:nth-child(3){
+                width: 15%;
 
+                @media (max-width: 700px){
+                    width: 20%;
+                }
+                @media (max-width: 550px){
+                    width: 30%;
+                }
+                @media (max-width: 480px){
+                    display: none;
+                }
+            }
+            &:nth-child(4){
+                width: 15%;
+
+                @media (max-width: 700px){
+                    display: none;
+                }
+            }
+            &:nth-child(5){
+                width: 20%;
+                border-right: .3vh solid var(--black);
+
+                @media (max-width: 700px){
+                    width: 25%;
+                }
+                @media (max-width: 550px){
+                    width: 30%;
+                }
+                @media (max-width: 480px){
+                    width: 50%;
+                }
+            }
         }
     }
 `

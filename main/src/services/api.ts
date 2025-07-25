@@ -12,6 +12,21 @@ export const deleteCache = () => {
     cachedDisplay = null
     cachedMembers = null
 }
+export const setInternal = (userId: number, info: User) => {
+    const foundedIndex = cachedMembers?.findIndex(user=> user.id === userId)
+    
+    cachedMembers![foundedIndex!].cpf = info.cpf
+    cachedMembers![foundedIndex!].email = info.email
+    cachedMembers![foundedIndex!].email_responsavel = info.responsavel
+    cachedMembers![foundedIndex!].fullname = info.fullname
+    cachedMembers![foundedIndex!].funcao = info.funcao
+    cachedMembers![foundedIndex!].pai = info.mae
+    cachedMembers![foundedIndex!].responsavel = info.responsavel
+    cachedMembers![foundedIndex!].nascimento = info.nascimento
+    cachedMembers![foundedIndex!].telefone = info.telefone
+    cachedMembers![foundedIndex!].telefone_responsavel = info.telefone_responsavel
+}
+
 export class ApiRequests {
     static async getAllMembers () {
         if (cachedMembers) return cachedMembers

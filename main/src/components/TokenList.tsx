@@ -149,14 +149,53 @@ export const StyledLi = styled.li`
         &:not(:nth-child(1)){
             border-left: .3vh solid var(--black);
         }
-        &:nth-child(1){width: 35%;}
-        &:nth-child(2){width: 10%;}
-        &:nth-child(3){width: 5%;}
-        &:nth-child(4){width: 20%;}
-        &:nth-child(5){width: 20%; display: flex; justify-content: space-between; align-items: center;}
+        &:nth-child(1){
+            width: 35%;
+
+            @media (max-width: 900px){
+                width: 40%;
+            }
+            @media (max-width: 600px){
+                width: 50%;
+            }
+        }
+        &:nth-child(2){
+            width: 10%;
+
+            @media (max-width: 900px){
+                display: none;
+            }
+        }
+        &:nth-child(3){
+            width: 5%;
+
+            @media (max-width: 900px){
+                display: none;
+            }
+        }
+        &:nth-child(4){
+            width: 20%;
+            @media (max-width: 600px){
+                width: 25%;
+            }
+        }
+        &:nth-child(5){
+            width: 20%; display: flex; justify-content: space-between; align-items: center;
+
+            @media (max-width: 600px){
+                display: none;
+            }
+        }
         &:nth-child(6){
             width: 10%;
             
+            @media (max-width: 900px){
+                width: 20%;
+            }
+            @media (max-width: 600px){
+                width: 25%;
+            }
+
             button{
                 position: relative;
                 left: 50%;
