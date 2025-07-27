@@ -9,3 +9,6 @@ export const convertToBRL = (value: string | number): string => {
         minimumFractionDigits: 2
     })
 }
+export const formatCentavos = (centavos: number) => {
+    return (centavos/100).toFixed(2).replace(".",",")
+}
