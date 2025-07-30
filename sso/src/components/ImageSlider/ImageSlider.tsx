@@ -28,10 +28,12 @@ const ImageSlider = () => {
                 className={`secondary_image photo shadow simple-box-shadow`}
                 src={`https://pioneirosdoadvento.com/assets/photos/${imgCount2}.jpg`}
                 style={{ position: 'absolute'}}
+                alt="Imagem secundária do slider"
             />
             <img
                 className={`main_image photo ${animation ? 'fadeout' : ''}`}
                 src={`https://pioneirosdoadvento.com/assets/photos/${imgCount}.jpg`}
+                alt="Imagem primária do slider"
             />
         </ImageSliderStyle>
     )
