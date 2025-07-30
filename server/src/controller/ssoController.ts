@@ -364,4 +364,57 @@ export class SsoController{
             res.status(500).json({ error: err })
         }
     }
+
+    static async createSessionByToken (req: Request, res: Response){
+        const { token } = req.params
+        const { name } = req.body
+
+        if (!name || `${name}`.length <= 0){
+            res.status(400).json({ error: "'name' é obrigatório" })
+            return
+        }
+
+        try{
+            const tokenid = await prisma.token_manager.findUnique({
+                where: {
+                    token: token,
+                    token_type: 3,
+                    expires_at: {
+                        gt: new Date()
+                    }
+                }
+            })
+            if (!tokenid){
+                res.status(404).json({ error: 'Usuário não encontrado' })
+                return
+            }
+
+            const user = await prisma.users.findUnique({
+                where: {
+                    id: tokenid.owner_id,
+                    fullname: `${name}`
+                },
+                select: {
+                    id: true,
+                    reg_users: true
+                }
+            })
+            if (!user){
+                res.status(404).json({ error: 'Usuário não encontrado' })
+                return
+            }
+
+            createSession(user.id, res)
+            await prisma.token_manager.delete({
+                where: {
+                    token: token,
+                    token_type: 3
+                }
+            })
+            res.status(200).json({ message: 'Autorizado', user: user.reg_users })
+        }
+        catch (err) {
+            res.status(500).json({ error: err })
+        }
+    }
 }

@@ -11,6 +11,7 @@ SsoRouter.post('/sso/createToken', SsoController.createToken)
 SsoRouter.post('/sso/createUser', SsoController.createUser)
 SsoRouter.post('/sso/login', SsoController.loginUser)
 SsoRouter.post('/sso/firebaseLogin', SsoController.firebaseLogin)
+SsoRouter.post('/sso/createSessionByToken/:token', SsoController.createSessionByToken)
 
 SsoRouter.put('/sso/resetPassword', SsoController.resetPassword)
 SsoRouter.put('/sso/changeInfo/:userId', SsoController.changeInfos)

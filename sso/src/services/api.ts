@@ -52,6 +52,26 @@ export class ApiRequests {
             throw err
         }
     }
+
+    static async getDisplay () {
+        try{
+            const response = await axios.get(`${apiPrefix}/user/display`, { withCredentials: true })
+            return response
+        }
+        catch (err){
+            throw err   
+        }
+    }
+
+    static async createSessionByToken (token: string, name: string) {
+        try{
+            const response = await axios.post(`${apiPrefix}/sso/createSessionByToken/${token}`, { name }, { withCredentials: true })
+            return response
+        }
+        catch(err){
+            throw err
+        }
+    }
 }
 
 export class UsersEvents {

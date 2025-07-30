@@ -5,6 +5,7 @@ import { systemMiddleware } from '../middlewares/system';
 const usersRouter = Router()
 
 usersRouter.get('/users', UsersController.getAll)
+usersRouter.get('/user/display', UsersController.getUserDisplay)
 usersRouter.get('/user/:id', UsersController.getUser)
 
 usersRouter.get('/users/display', UsersController.getAllDisplay)

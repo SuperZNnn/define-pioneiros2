@@ -223,6 +223,34 @@ export class UsersController {
             res.status(500).send(err)
         }
     }
+    static async getUserDisplay (req: Request, res: Response) {
+        try{
+            const sessionToken = req.cookies.pdaSessionCookie
+            const jwtkey = process.env.JWT_KEY
+            const jwtUser = jwt.verify(sessionToken, `${jwtkey}`) as { exp: number, iat: number, userId: number }
+
+            const user = await prisma.reg_users.findUnique({
+                where: {
+                    origin_id: Number(jwtUser.userId)
+                },
+                select: {
+                    login: true,
+                    is_old: true,
+                    display_name: true
+                }
+            })
+            if (user){
+                res.status(200).json({ message: 'Autorizado', user })
+            }
+            else{
+                res.status(401).json({ message: 'Não autorizado' })
+            }
+            
+        }
+        catch (err){
+            res.status(500).send(err)
+        }
+    }
 
     static async updateUsers (req: Request, res: Response){
         const { userId } = req.params

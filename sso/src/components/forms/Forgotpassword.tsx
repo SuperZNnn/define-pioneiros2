@@ -68,6 +68,8 @@ const ForgotPassword = ({setFormType, formType, setUser}: {setUser: (user: User)
                         <button style={{ width: '45%' }} className="btn form yellow resp1" onClick={setFormType} type="button">Fazer Login</button>
                     </div>
                 </div>
+
+                <a target="blank" href={`https://api.whatsapp.com/send?phone=${import.meta.env.VITE_BOT_PHONE}&text=${encodeURIComponent('Olá, gostaria de recuperar meu login')}`}><p style={{ color: 'var(--black)' }} className="redirect simple-warn underline-anim">Esqueci meu login</p></a>
             </form>
         </FormStyles>
     )

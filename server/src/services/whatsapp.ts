@@ -7,7 +7,7 @@ import { WhatsAppReplys } from "./whatsappReplys";
 
 const client = new Client({
     puppeteer: {
-        headless: true
+        headless: false
     },
 
     authStrategy: new Whatsapp.LocalAuth()

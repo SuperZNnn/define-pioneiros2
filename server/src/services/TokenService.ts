@@ -34,7 +34,7 @@ export const internalCreateToken = async (
     return { success: false, error: 'userId é obrigatório' }
   }
 
-  if (![1, 2].includes(tokenType)) {
+  if (![1, 2, 3].includes(tokenType)) {
     return { success: false, error: 'Tipo de token inválido' }
   }
 

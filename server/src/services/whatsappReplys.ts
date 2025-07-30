@@ -4,8 +4,8 @@ import { internalCreateToken } from "./TokenService"
 import { ssoPrefix } from "./emailsMessages"
 
 type ActionState = {
-    action: 'sgc_code' | 'sleep' | 'finishregister',
-    status: 'waiting_number' | 'sleep' | 'waiting_confirmation' | 'waiting_name' | 'wait_try_confirm'
+    action: 'sgc_code' | 'sleep' | 'finishregister' | 'resetlogin' | 'resetpassword',
+    status: 'waiting_number' | 'sleep' | 'waiting_confirmation' | 'waiting_name' | 'wait_try_confirm' | 'waiting_number_select'
     forUser?: { telefone?: string | null, telefone_responsavel?: string | null, cpf?: string | null, id: number } 
 }
 
@@ -24,6 +24,35 @@ const setInactivityTimeout = (number: string) => {
 
     userTimeouts.set(number, timeout)
 }
+const createSessionLink = async (userId: number, message: Whatsapp.Message, number: string, fullname: string) => {
+    const token = await internalCreateToken(userId, 3, false, true)
+    if (token.error){
+        console.log(token.error)
+        if (token.error === 'Já existe um token válido para este usuário.'){
+            await message.reply('O link já foi gerado!')
+            userStates.set(number, {action: 'sleep', status: "sleep"})
+            return
+        }
+
+        await message.reply('Erro interno, tente novamente mais tarde!')
+        userStates.set(number, {action: 'sleep', status: "sleep"})
+        return
+    }
+    if (token.token){
+        await prisma.reg_users.update({
+            where: {
+                origin_id: userId
+            },
+            data: {
+                is_old: 1
+            }
+        })
+
+        await message.reply(`*Sucesso!*\nAgora continue nesse link!\n${ssoPrefix}/createsession/${token.token}/${encodeURIComponent(fullname)}`)
+        userStates.set(number, {action: 'sleep', status: "sleep"})
+    }
+}
+
 
 export const WhatsAppReplys = async (message: Whatsapp.Message) => {
     const noSufix = message.from.replace('@c.us', '')
@@ -41,6 +70,7 @@ export const WhatsAppReplys = async (message: Whatsapp.Message) => {
             ]
         },
         select: {
+            id: true,
             sgc_code: true,
             fullname: true,
             telefone: true,
@@ -64,10 +94,7 @@ export const WhatsAppReplys = async (message: Whatsapp.Message) => {
                 await message.reply(text)
                 userStates.set(number, {action: 'sgc_code', status: "waiting_confirmation"})
             }
-            else if (users.length === 2){
-                userStates.set(number, {action: 'sleep', status: 'sleep'})
-            }
-            else{
+            else if (users.length > 1){
                 let text = `Olá, de quem você quer receber o código do SGC?\n\n`
                 for (let i = 0; i < users.length; i++){
                     text += `*${i+1}-* ${users[i].fullname}\n`
@@ -248,6 +275,210 @@ export const WhatsAppReplys = async (message: Whatsapp.Message) => {
             if (result.token){
                 await message.reply(`*Sucesso!*\nContinue seu registro em:`)
                 await message.reply(`${ssoPrefix}/finishregister/${result.token}/${encodeURIComponent(user!.fullname)}`)
+                userStates.set(number, {action: 'sleep', status: 'sleep'})
+            }
+        }
+        else{
+            await message.reply('Não foi possível validar seu contato!')
+            userStates.set(number, {action: 'sleep', status: 'sleep'})
+        }
+    }
+
+    // Esqueceu login
+    if (state.action === 'sleep' && message.body === 'Olá, gostaria de recuperar meu login'){
+        setInactivityTimeout(number)
+        const originPhone = users.find(item=>item.telefone === number)
+
+        if (users.length === 1){
+            if (AdmFuncs.includes(originPhone?.funcao??'')){
+                let text = `Olá *${users[0].fullname}*\nDeseja receber redefinir seu login?\n\n*1-* Sim\n*2-* Não, obrigado\n*3-* Quero redefinir de outro usuário`
+                await message.reply(text)
+                userStates.set(number, {action: "resetlogin", status: 'waiting_number'})
+                return
+            }
+            createSessionLink(users[0].id, message, number, users[0].fullname)
+        }
+        else if (users.length > 1){
+            let text = `Olá, de quem você quer recuperar o login?\n\n`
+            for (let i = 0; i < users.length; i++){
+                text += `*${i+1}-* ${users[i].fullname}\n`
+            }
+
+            const originPhone = users.find(item=>item.telefone === number)
+            if (AdmFuncs.includes(originPhone?.funcao??'')) text += `*${users.length+1}-* Login de outro membro`
+
+            await message.reply(text)
+            userStates.set(number, {action: "resetlogin", status: 'waiting_number_select'})
+        }
+    }
+    if (state.action === 'resetlogin' && state.status === 'waiting_number'){
+        setInactivityTimeout(number)
+
+        if (parseInt(message.body) === 1){
+            createSessionLink(users[0].id, message, number, users[0].fullname)
+        }
+        else if (parseInt(message.body) === 3){
+            await message.reply(`Certo!\nEscreva o nome completo de quem você deseja recuperar o login:`)
+            userStates.set(number, {action: 'resetlogin', status: 'waiting_name'})
+        }
+        else{
+            userStates.set(number, {action: 'sleep', status: 'sleep'})
+        }
+    }
+    if (state.action === 'resetlogin' && state.status === 'waiting_number_select'){
+        setInactivityTimeout(number)
+
+        const originPhone = users.find(item=>item.telefone === number)
+        if (parseInt(message.body) <= users.length){
+            createSessionLink(users[parseInt(message.body) - 1].id, message, number, users[parseInt(message.body) - 1].fullname)
+        }
+        else if (parseInt(message.body) === users.length + 1 && AdmFuncs.includes(originPhone?.funcao??'')){
+            await message.reply('Certo.\nDigite o nome completo do membro que você deseja recuperar o login.')
+            userStates.set(number, {action: 'resetlogin', status: 'waiting_name'})
+        }
+        else{
+            userStates.set(number, {action: 'sleep', status: 'sleep'})
+        }
+    }
+    if (state.action === 'resetlogin' && state.status === 'waiting_name'){
+        setInactivityTimeout(number)
+
+        const name = message.body.toUpperCase()
+
+        const ByNameUser = await prisma.users.findFirst({
+            where: {
+                fullname: name
+            },
+            select: {
+                id: true,
+                fullname: true,
+                reg: true
+            }
+        })
+        if (!ByNameUser){
+            await message.reply(`Membro inexistente, ou digitado incorretamente!\nDeseja tentar novamente?\n\n*1-* Sim\n*2-* Não`)
+            userStates.set(number, {status: 'wait_try_confirm', action: 'sgc_code'})
+        }
+        else{
+            if (ByNameUser.reg === 1) createSessionLink(ByNameUser.id, message, number, ByNameUser.fullname)
+            else {
+                await message.reply(`Esse usuário não possui registro!`)
+                userStates.set(number, {status: 'sleep', action: 'sleep'})
+            }
+        }
+    }
+    if (state.action === 'resetlogin' && state.status === 'wait_try_confirm'){
+        setInactivityTimeout(number)
+
+        if (message.body === '1'){
+            await message.reply('Certo.\nDigite o nome completo do membro que você deseja o código.')
+            userStates.set(number, {action: 'resetlogin', status: 'waiting_name'})
+        }
+        else{
+            userStates.set(number, {action: 'sleep', status: 'sleep'})
+        }
+    }
+
+    // Esqueceu a senha
+    if (state.action === 'sleep' && /^Olá, gostaria de recuperar a senha de \*.+\*$/.test(message.body.trim())){
+        const match = message.body.trim().match(/^Olá, gostaria de recuperar a senha de \*(.+)\*$/)
+        setInactivityTimeout(number)
+
+        const user = await prisma.users.findFirst({
+            where: {
+                fullname: match![1],
+                reg: 1
+            },
+            select: {
+                telefone: true,
+                telefone_responsavel: true,
+                cpf: true,
+                id: true
+            }
+        })
+        const reg_user = await prisma.reg_users.findFirst({
+            where: {
+                origin_id: user!.id
+            }
+        })
+
+        if (!user || !reg_user){
+            await message.reply('Desculpe, mas esse usuário não está disponível!')
+            userStates.set(number, {action: 'sleep', status: 'sleep'})
+            return
+        }
+
+        if (user.telefone === number || user.telefone_responsavel === number){
+            const result = await internalCreateToken(user.id, 2, user.telefone === number, true)
+
+            if (!result.success) {
+                if (result.error){
+                    if (result.error === 'Já existe um token válido para este usuário.'){
+                        await message.reply('*Token já gerado!*')
+                        userStates.set(number, {action: 'sleep', status: 'sleep'})
+                        return
+                    }
+                }
+
+                await message.reply('*Erro interno!*\nPor favor tente novamente mais tarde!')
+                userStates.set(number, {action: 'sleep', status: 'sleep'})
+                return
+            }
+
+            if (result.token && match){
+                await message.reply(`*Sucesso!*\nContinue em:`)
+                await message.reply(`${ssoPrefix}/resetpassword/${result.token}/${encodeURIComponent(match[1])}`)
+                userStates.set(number, {action: 'sleep', status: 'sleep'})
+            }
+        }
+        else{
+            await message.reply('Desculpe, este número não está vinculado a este usuário!\nDeseja comprovar sua identidade?\n\n*1-* Sim\n*2-* Não')
+            userStates.set(number, {action: 'resetpassword', status: 'wait_try_confirm', forUser: user})
+        }
+    }
+    if (state.action === 'resetpassword' && state.status === 'wait_try_confirm'){
+        setInactivityTimeout(number)
+
+        if (message.body === '1'){
+            await message.reply('Ok!\nDigite seu cpf (apenas números, sem pontos e traços)')
+            userStates.set(number, {action: 'resetpassword', status: 'waiting_number', forUser: state.forUser})
+        }
+        else{
+            userStates.set(number, {action: 'sleep', status: 'sleep', forUser: undefined})
+        }
+    }
+    if (state.action === 'resetpassword' && state.status === 'waiting_number'){
+        setInactivityTimeout(number)
+
+        const user = await prisma.users.findFirst({
+            where: {
+                id: userStates.get(number)?.forUser?.id
+            },
+            select: {
+                fullname: true
+            }
+        })
+
+        if (state.forUser?.cpf && state.forUser?.cpf === message.body){
+            const result = await internalCreateToken(userStates.get(number)!.forUser!.id, 2, false, true)
+
+            if (!result.success) {
+                if (result.error){
+                    if (result.error === 'Já existe um token válido para este usuário.'){
+                        await message.reply('*Token já gerado!*')
+                        userStates.set(number, {action: 'sleep', status: 'sleep'})
+                        return
+                    }
+                }
+
+                await message.reply('*Erro interno!*\nPor favor tente novamente mais tarde!')
+                userStates.set(number, {action: 'sleep', status: 'sleep'})
+                return
+            }
+
+            if (result.token){
+                await message.reply(`*Sucesso!*\nContinue seu registro em:`)
+                await message.reply(`${ssoPrefix}/resetpassword/${result.token}/${encodeURIComponent(user!.fullname)}`)
                 userStates.set(number, {action: 'sleep', status: 'sleep'})
             }
         }

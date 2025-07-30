@@ -4,8 +4,8 @@ import { FormStyles } from "../components/forms/Login"
 import { useForm } from "react-hook-form"
 import * as Yup from 'yup'
 import { yupResolver } from "@hookform/resolvers/yup"
-import { useState } from "react"
-import { UsersEvents } from "../services/api"
+import { useEffect, useState } from "react"
+import { ApiRequests, UsersEvents } from "../services/api"
 
 const UpdateOldPage = () => {
     const location = useLocation()
@@ -42,6 +42,19 @@ const UpdateOldPage = () => {
             console.log(err)
         })
     }
+
+    useEffect(() => {
+        ApiRequests.getDisplay()
+        .then(res => {
+            const resData = res.data as { message: string, user: { display_name: string, is_old: number, login: string } }
+            if (resData.user.is_old === 0){
+                window.location.href = 'http://localhost:5173'
+            }
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    }, [])
 
     return (
         <FinishRegisterStyle>
