@@ -5,6 +5,7 @@ import ProfilePage from "./pages/ProfilePage"
 import LoggedPagesLayout from "./layouts/loggedPages"
 import TokenManagerPage from "./pages/admPages/TokensManager"
 import MembersListPage, { MemberEditModal } from "./pages/admPages/MembersList"
+import DesbravaPixPage from "./pages/admPages/DesbravaPix"
 
 const AppRouter = () => {
     return (
@@ -15,7 +16,8 @@ const AppRouter = () => {
             <Route path="/" element={<LoggedPagesLayout/>}>
                 <Route path="/profile" element={<ProfilePage/>}/>
                 <Route path="/tokenmanager" element={<TokenManagerPage/>}/>
-                
+                <Route path="/desbravapix" element={<DesbravaPixPage/>}/>
+
                 <Route path="/secretaria/membros" element={<MembersListPage/>}/>
                 <Route path="/secretaria/membros/:userid" element={<><MembersListPage/><MemberEditModal/></>}/>
             </Route>

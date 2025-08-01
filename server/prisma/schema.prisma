@@ -22,6 +22,7 @@ model pix_history {
   from              Int
   to                Int
   value             Decimal @db.Decimal(10,2)
+  from_system       Int?
 
   from_user         users   @relation("PixFrom", fields: [from], references: [id], onDelete: NoAction, onUpdate: NoAction)
   to_user           users   @relation("PixTo", fields: [to], references: [id], onDelete: NoAction, onUpdate: NoAction)

@@ -12,7 +12,7 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import ImageCropper from "../../components/Cropper"
 import { useAuth } from "../../hooks/useAuth"
 import { useToasts } from "../../hooks/useToasts"
-import { AdmFuncs } from "./TokensManager"
+import { AdmFuncs } from "../../types/user"
 
 const MembersListPage = () => {
     const { getUser } = useAuth()

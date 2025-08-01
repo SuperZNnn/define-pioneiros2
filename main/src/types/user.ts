@@ -24,3 +24,5 @@ export type DisplayInfo = {
     origin_id: number
     photo?:string 
 }
+
+export const AdmFuncs = ['Diretor', 'Diretora', 'Diretor Associado', 'Diretora Associada', 'Secretário', 'Secretária']
