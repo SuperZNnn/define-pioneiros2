@@ -17,7 +17,8 @@ export type User = {
     reg: number,
     status: number,
     sgc_code: number,
-    pix: string
+    pix: string,
+    unidade: number
 }
 export type DisplayInfo = {
     display_name: string

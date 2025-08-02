@@ -120,3 +120,17 @@ export class PixEvents {
         return axios.post(`${apiPrefix}/pix/systemRemove`, { from, to, amount, system: 2 }, { withCredentials: true })
     }
 }
+
+export class UnidadesEvents {
+    static async getAllUnidades (){
+        return axios.get(`${apiPrefix}/unidades`)
+    }
+
+    static async update (userId: number, unidade: number|null, cargo: string|null){
+        return axios.put(`${apiPrefix}/member/${userId}`, { unidade, cargo }, { withCredentials: true })
+    }
+
+    static async setNew (userId: number, unidade: number, cargo: string){
+        return axios.post(`${apiPrefix}/member/${userId}`, { unidade, cargo }, { withCredentials: true })
+    }
+}

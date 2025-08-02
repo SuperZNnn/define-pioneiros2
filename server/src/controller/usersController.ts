@@ -42,7 +42,8 @@ export class UsersController {
                     sgc_code: true,
                     cpf: true,
                     status: true,
-                    pix: true
+                    pix: true,
+                    unidade: true
                 },
                 orderBy: {
                     fullname: 'asc'
@@ -81,7 +82,8 @@ export class UsersController {
                         email_responsavel: user.email_responsavel?true:false,
                         reg: user.reg,
                         status: user.status,
-                        pix: user.pix
+                        pix: user.pix,
+                        unidade: user.unidade
                     }
 
                     if (showPhoto) {

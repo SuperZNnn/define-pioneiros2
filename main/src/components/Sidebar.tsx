@@ -28,7 +28,7 @@ export const SideBar = ({user, logout}: { user: number | undefined, logout: () =
                 <a href="#camporis"><button className="btn noradius" style={{ width: '100%' }}>Camporis</button></a>
                 <a href="#members"><button className="btn noradius" style={{ width: '100%' }}>Membros</button></a>
                 
-                <a><button className="btn noradius" style={{ width: '100%', marginTop: '1vh' }}>Unidades</button></a>
+                <a href="#unidades"><button className="btn noradius" style={{ width: '100%', marginTop: '1vh' }}>Unidades</button></a>
                 <a><button className="btn noradius" style={{ width: '100%' }}>Nos apoie</button></a>
             </SidebarStyle>
 
@@ -77,6 +77,7 @@ export const LoggedSidebar = () => {
                     <BurgerList title="Secretaria">
                         <Link to='/secretaria/membros'><button className="btn noradius" style={{ width: '100%', height: '5vh' }}>Membros</button></Link>
                         <Link to='/desbravapix'><button className="btn noradius" style={{ width: '100%', height: '5vh' }}>Gerenciador DesbravaPix</button></Link>
+                        <Link to='/secretaria/unidades'><button className="btn noradius" style={{ width: '100%', height: '5vh' }}>Unidades</button></Link>
                     </BurgerList>
                 :null}
 

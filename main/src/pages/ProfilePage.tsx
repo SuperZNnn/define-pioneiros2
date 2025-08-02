@@ -206,6 +206,17 @@ const ProfilePageStyle = styled.main`
 `;
 
 export const FormStyles = styled.div`
+    option{
+        color: #fff;
+
+        &:nth-child(odd){
+            background-color: var(--third-color)
+        }
+        &:nth-child(even){
+            background-color: var(--second-color)
+        }
+    }
+
     form{
         padding: 1vh;
         display: flex;

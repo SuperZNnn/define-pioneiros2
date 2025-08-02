@@ -12,6 +12,7 @@ import PhotoServerRouter from './router/photoServerRouter'
 import schedule from 'node-schedule'
 import { prisma } from './controller/usersController'
 import PixRouter from './router/pixRouter'
+import UnidadesRouter from './router/unidadesRouter'
 
 dotenv.config()
 
@@ -47,6 +48,7 @@ app.use(cookieParser())
 app.use(cleanExpiredTokens)
 
 app.use(PixRouter)
+app.use(UnidadesRouter)
 app.use(PhotoServerRouter)
 app.use(usersRouter)
 app.use(SsoRouter)
