@@ -1,8 +1,5 @@
 import { Request, Response } from "express";
-import { generateUrlFriendlyToken } from "../services/generators";
 import { prisma } from "./usersController";
-import { sendEmail } from "../services/email";
-import { FinishRegisterMessage, ForgotPasswordMessage } from "../services/emailsMessages";
 import bcrypt from 'bcrypt'
 import { createSession, deleteSession } from "../services/cookiesManager";
 import jwt from 'jsonwebtoken'

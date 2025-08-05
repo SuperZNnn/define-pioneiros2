@@ -7,12 +7,14 @@ import TokenManagerPage from "./pages/admPages/TokensManager"
 import MembersListPage, { MemberEditModal } from "./pages/admPages/MembersList"
 import DesbravaPixPage from "./pages/admPages/DesbravaPix"
 import UnidadesManager from "./pages/admPages/UnidadesManager"
+import BePathfinderPage from "./pages/SejaDesbravador"
 
 const AppRouter = () => {
     return (
         <Routes>
             <Route path="/" element={<HomePage/>} />
             <Route path="/show/:id" element={<><HomePage/><MemberModal/></>}/>
+            <Route path="/sejadesbravador" element={<BePathfinderPage/>}/>
 
             <Route path="/" element={<LoggedPagesLayout/>}>
                 <Route path="/profile" element={<ProfilePage/>}/>

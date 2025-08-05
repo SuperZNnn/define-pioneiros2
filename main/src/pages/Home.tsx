@@ -58,7 +58,7 @@ const HomePage = () => {
                                 <a href="http://localhost:5174/redirect?for=http://localhost:5173/profile">
                                     <button className="btn hoverAnim1" style={{ background: 'var(--first-color)', color: '#fff' }}>Fazer Login</button>
                                 </a>
-                                <button className="btn hoverAnim1" style={{ background: 'var(--fourth-color)' }}>Seja um Desbravador</button>
+                                <Link to='/sejadesbravador'><button className="btn hoverAnim1" style={{ background: 'var(--fourth-color)' }}>Seja um Desbravador</button></Link>
                             </>:
                             <>
                                 <Link to='/profile'>

@@ -109,6 +109,18 @@ const UnidadesManager = () => {
                         membros={membrosUnidades??[]}
                         />
                     ))}
+                    {users && unidades?.map(item=>(
+                        <UnidadeBanner
+                        key={item.un_id}
+                        unidade={item}
+                        members={users}
+                        memberClickEvent={(id: number) => {
+                            const foundUser = users.find(item => item.id === id)
+                            setUserToModify(foundUser)
+                        }}
+                        membros={membrosUnidades??[]}
+                        />
+                    ))}
                 </div>
             </section>
             
@@ -157,6 +169,11 @@ const UnidadesStyle = styled.main`
             max-height: 83vh;
             overflow: auto;
         }
+    }
+
+    .un-list{
+        height: 83vh;
+        overflow: auto;
     }
 
     .unidades{

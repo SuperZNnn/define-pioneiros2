@@ -61,6 +61,12 @@ export class ApiRequests {
     static async DestroySession() {
         return axios.delete(`${apiPrefix}/sso/destroySession`, { withCredentials: true })
     }
+
+    static async fetchCep(cep: string) {
+        const numbercep = parseInt(cep.replace(/\D/g, ""))
+        
+        return axios.get(`https://viacep.com.br/ws/${numbercep}/json`)
+    }
 }
 
 export class UserEvents {

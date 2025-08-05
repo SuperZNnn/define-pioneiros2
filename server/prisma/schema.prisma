@@ -41,7 +41,7 @@ model unidade_info {
 
 model unidade_member {
   member_id   Int    @unique
-  unidade_cod Int    @unique
+  unidade_cod Int
   cargo       String @db.VarChar(30)
 
   ref_unidade unidade_info @relation("Unidade", fields: [unidade_cod], references: [un_id], onDelete: NoAction, onUpdate: NoAction)
