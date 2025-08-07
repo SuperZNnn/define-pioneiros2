@@ -1,8 +1,11 @@
 import { Router } from 'express';
 import { UsersController } from '../controller/usersController';
 import { systemMiddleware } from '../middlewares/system';
+import { CorsPermission } from '../middlewares/corspermission';
 
 const usersRouter = Router()
+
+usersRouter.use(CorsPermission)
 
 usersRouter.get('/users', UsersController.getAll)
 usersRouter.get('/user/display', UsersController.getUserDisplay)

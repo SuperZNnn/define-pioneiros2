@@ -1,7 +1,10 @@
 import { Router } from "express";
 import { UnidadesController } from "../controller/unidadesController";
+import { CorsPermission } from "../middlewares/corspermission";
 
 const UnidadesRouter = Router()
+
+UnidadesRouter.use(CorsPermission)
 
 UnidadesRouter.get('/unidades', UnidadesController.getUnidades)
 

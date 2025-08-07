@@ -123,6 +123,6 @@ export const sendBdayMessage = async (userid: number, name: string, funcao: stri
         console.log(err)
     }
 }
-client.initialize()
+//client.initialize()
 
 export default WhatsappRouter
