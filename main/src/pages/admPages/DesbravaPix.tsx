@@ -6,7 +6,7 @@ import { AdmFuncs, type User } from "../../types/user"
 import { useNavigate } from "react-router-dom"
 import { useToasts } from "../../hooks/useToasts"
 import Selector from "../../components/Selector"
-import PixList from "../../components/Pixlist"
+import PixList from "../../components/PixManager/Pixlist"
 import ValueInput from "../../components/ValueInput"
 import { convertToBRL, formatCentavos } from "../../hooks/useConvert"
 

@@ -3,6 +3,7 @@ import { Request, Response } from "express"
 import jwt from 'jsonwebtoken'
 import { toUpdate } from "../types/users"
 import { dateByString } from "../services/generators"
+import { newBePathfinderMessage } from "../services/whatsapp"
 
 export const prisma = new PrismaClient()
 export const AdmFuncs = ['Diretor', 'Diretora', 'Diretor Associado', 'Diretora Associada', 'Secretário', 'Secretária']
@@ -331,6 +332,24 @@ export class UsersController {
                 }
             })
             res.status(200).json({ message: 'Usuário ativado' })
+        }
+        catch(err){
+            res.status(500).send(err)
+        }
+    }
+
+    static async bePathfinderNew (req: Request, res: Response){
+        const { data } = req.body
+        const reqData = data as {bairro?: string, city: string, name: string, nascimento: string, rua?: string, state: string, email?: string, phone: string, respPhone?: boolean}
+
+        try{
+            const response = await newBePathfinderMessage(reqData)
+            if (response?.message === 'Success'){
+                res.status(200).json({ message: 'Success' })
+            }
+            else{
+                res.status(500).json({ message: 'Erro interno' })
+            }
         }
         catch(err){
             res.status(500).send(err)

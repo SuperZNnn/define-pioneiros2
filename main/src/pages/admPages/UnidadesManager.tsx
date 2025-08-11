@@ -6,8 +6,8 @@ import { AdmFuncs, type User } from "../../types/user"
 import { useToasts } from "../../hooks/useToasts"
 import { useNavigate } from "react-router-dom"
 import UnidadeBanner from "../../components/UnidadeBanner"
-import AddUserUnidade from "../../components/AddUserUnidade"
-import ModifyUserUnidade from "../../components/ModifyUserUnidade"
+import AddUserUnidade from "../../components/UnidadeManager/AddUserUnidade"
+import ModifyUserUnidade from "../../components/UnidadeManager/ModifyUserUnidade"
 
 export type Unidade = {
     un_id: number,

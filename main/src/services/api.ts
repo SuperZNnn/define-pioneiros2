@@ -98,6 +98,10 @@ export class UserEvents {
     static async reativeUser(user: number) {
         return axios.put(`${apiPrefix}/users/reativeUser/${user}`, {}, { withCredentials: true })
     }
+
+    static async bePathfinderNew (data: {bairro?: string, city: string, name: string, nascimento: string, rua?: string, state: string, email?: string, phone: string, respPhone?: boolean}) {
+        return axios.post(`${apiPrefix}/users/bePathfinderNew`, { data })
+    }
 }
 
 export class SystemEvents {

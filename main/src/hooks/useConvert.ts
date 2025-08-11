@@ -96,3 +96,14 @@ export const convertToBRL = (value: string | number): string => {
 export const formatCentavos = (centavos: number) => {
     return (centavos/100).toFixed(2).replace(".",",")
 }
+
+export const getIdade = (date: string) => {
+    const today = new Date()
+    const nasc = new Date(date)
+    let idade = today.getFullYear() - nasc.getFullYear()
+    const m = today.getMonth() - nasc.getMonth()
+
+    if (m < 0 || (m === 0 && today.getDate() < nasc.getDate())) idade--
+
+    return idade
+}

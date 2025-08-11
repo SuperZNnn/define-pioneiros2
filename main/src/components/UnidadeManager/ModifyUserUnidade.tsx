@@ -1,10 +1,10 @@
 import { useRef } from "react"
-import { FormStyles } from "../pages/ProfilePage"
-import type { User } from "../types/user"
-import ModalContainer from "./ModalContainer"
-import type { Unidade, UnidadeMembro } from "../pages/admPages/UnidadesManager"
+import { FormStyles } from "../../pages/ProfilePage"
+import type { User } from "../../types/user"
+import ModalContainer from "../ModalContainer"
+import type { Unidade, UnidadeMembro } from "../../pages/admPages/UnidadesManager"
 import styled from "styled-components"
-import { UnidadesEvents } from "../services/api"
+import { UnidadesEvents } from "../../services/api"
 
 const ModifyUserUnidade = ({setUserToModify, userToModify, unidades, setMembrosUnidades}: {
         setUserToModify: (user: User|undefined) => void

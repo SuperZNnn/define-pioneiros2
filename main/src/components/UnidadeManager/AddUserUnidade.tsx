@@ -1,10 +1,10 @@
 import styled from "styled-components";
-import ModalContainer from "./ModalContainer";
-import { useToasts } from "../hooks/useToasts";
-import type { Unidade, UnidadeMembro } from "../pages/admPages/UnidadesManager";
+import ModalContainer from "../ModalContainer";
+import { useToasts } from "../../hooks/useToasts";
+import type { Unidade, UnidadeMembro } from "../../pages/admPages/UnidadesManager";
 import { useRef } from "react";
-import type { User } from "../types/user";
-import { UnidadesEvents } from "../services/api";
+import type { User } from "../../types/user";
+import { UnidadesEvents } from "../../services/api";
 
 const AddUserUnidade = ({userToAdd, unidades, setUserToAdd, setMembrosUnidades, noUnidadeUser, setNoUnidadeUser}:
     {

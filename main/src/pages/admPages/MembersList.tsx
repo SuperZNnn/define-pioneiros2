@@ -292,6 +292,7 @@ export const MemberEditModal = () => {
                                 value={watch("telefone")}
                                 className="ipt-basic border"
                                 placeholder="Telefone"
+                                inputMode="numeric"
                                 />
                             </div>
 
@@ -305,6 +306,7 @@ export const MemberEditModal = () => {
                                 value={watch("telefone_responsavel")}
                                 className="ipt-basic border"
                                 placeholder="Telefone do Responsável"
+                                inputMode="numeric"
                                 />
                             </div>
 

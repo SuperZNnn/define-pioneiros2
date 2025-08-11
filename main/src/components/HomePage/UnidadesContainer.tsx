@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react"
 import styled from "styled-components"
-import type { Unidade, UnidadeMembro } from "../pages/admPages/UnidadesManager"
-import { ApiRequests, UnidadesEvents } from "../services/api"
-import UnidadeBanner from "./UnidadeBanner"
-import type { User } from "../types/user"
+import type { Unidade, UnidadeMembro } from "../../pages/admPages/UnidadesManager"
+import { ApiRequests, UnidadesEvents } from "../../services/api"
+import UnidadeBanner from "../UnidadeBanner"
+import type { User } from "../../types/user"
 import { useNavigate } from "react-router-dom"
 
 const UnidadesContainer = () => {

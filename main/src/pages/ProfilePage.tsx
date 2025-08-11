@@ -231,6 +231,47 @@ export const FormStyles = styled.div`
         }
     }
 
+    .custom-checkbox{
+        input[type="checkbox"] {
+            display: none;
+        }
+        label {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            background-color: #f0f0f0;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s, border-color 0.3s;
+            overflow: hidden;
+        }
+        input[type="checkbox"]:checked + label {
+            background-color: #4caf50;
+            border-color: #4caf50;
+
+            &.senha{
+                background-color: #406f9a;
+                border-color: #406f9a;
+            }
+        }
+        input[type="checkbox"]:checked + label::after {
+            content: '✔';
+            color: white;
+            font-size: 16px;
+            display: block;
+            text-align: center;
+            line-height: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        input[type="checkbox"]:checked + label.senha::after{
+            content: '👀';
+            transform: translate(0vh,-.3vh)
+        }
+    }
+
     .input-group{
         height: 9.5vh;
 

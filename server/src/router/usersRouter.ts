@@ -18,4 +18,6 @@ usersRouter.put('/users/update/:userId', systemMiddleware, UsersController.updat
 usersRouter.put('/users/inativeUser/:userid', systemMiddleware, UsersController.inativeUser)
 usersRouter.put('/users/reativeUser/:userid', systemMiddleware, UsersController.reativeUser)
 
+usersRouter.post('/users/bePathfinderNew', UsersController.bePathfinderNew)
+
 export default usersRouter

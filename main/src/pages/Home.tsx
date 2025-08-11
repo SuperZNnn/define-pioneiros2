@@ -1,12 +1,12 @@
 import styled from "styled-components"
-import ImageSlider from "../components/ImageSlider"
+import ImageSlider from "../components/HomePage/ImageSlider"
 import { useEffect, useState } from "react"
-import CamporiContainer from "../components/CamporisContainer"
+import CamporiContainer from "../components/HomePage/CamporisContainer"
 import MembersContainer from "../components/MembersContainer"
 import { useAuth } from "../hooks/useAuth"
 import { Link } from "react-router-dom"
 import { SideBar } from "../components/Sidebar"
-import UnidadesContainer from "../components/UnidadesContainer"
+import UnidadesContainer from "../components/HomePage/UnidadesContainer"
 
 const HomePage = () => {
     const { logout, getUser } = useAuth()

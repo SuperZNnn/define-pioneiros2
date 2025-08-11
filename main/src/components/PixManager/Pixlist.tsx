@@ -1,7 +1,7 @@
 import { useState } from "react"
-import { convertToBRL } from "../hooks/useConvert"
-import type { User } from "../types/user"
-import MiniPopup from "./MiniPopup"
+import { convertToBRL } from "../../hooks/useConvert"
+import type { User } from "../../types/user"
+import MiniPopup from "../MiniPopup"
 
 const PixList = ({users, from, to, value, fromSystem}: { fromSystem?: number, users: User[], from: number, to: number, value: string }) => {
     const fromUser = users?.find(user => user.id === from)
