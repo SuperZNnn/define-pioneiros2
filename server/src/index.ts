@@ -12,6 +12,7 @@ import PhotoServerRouter from './router/photoServerRouter'
 import schedule from 'node-schedule'
 import { prisma } from './controller/usersController'
 import PixRouter from './router/pixRouter'
+import UnidadesRouter from './router/unidadesRouter'
 
 dotenv.config()
 
@@ -22,6 +23,7 @@ export const allowedOrigins = [
     'http://localhost:5173',
     'http://localhost:5174',
     'http://localhost:5175',
+    'http://localhost:5176',
     'http://localhost:3000'
 ]
 
@@ -46,8 +48,9 @@ app.use(json())
 app.use(cookieParser())
 app.use(cleanExpiredTokens)
 
-app.use(PixRouter)
 app.use(PhotoServerRouter)
+app.use(PixRouter)
+app.use(UnidadesRouter)
 app.use(usersRouter)
 app.use(SsoRouter)
 app.use(WhatsappRouter)

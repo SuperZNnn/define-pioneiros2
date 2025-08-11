@@ -6,6 +6,7 @@ import { useAuth } from "../../hooks/useAuth"
 import type { User } from "../../types/user"
 import { useToasts } from "../../hooks/useToasts"
 import { useNavigate } from "react-router-dom"
+import { AdmFuncs } from "../../types/user"
 
 type Tokens = {
     owner_id: number,
@@ -13,8 +14,6 @@ type Tokens = {
     token_type: number,
     expires_at?: Date
 }
-
-export const AdmFuncs = ['Diretor', 'Diretora', 'Diretor Associado', 'Diretora Associada', 'Secretário', 'Secretária']
 
 const TokenManagerPage = () => {
     const { getUser } = useAuth()

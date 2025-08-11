@@ -7,10 +7,7 @@ const HomePage = () => {
     const location = useLocation()
 
     useEffect(() => {
-        if (location.state){
-            
-        }
-        else{
+        if (!location.state){
             window.location.href = 'https://pioneirosdoadvento.com'
         }
     }, [])

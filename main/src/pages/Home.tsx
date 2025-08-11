@@ -1,11 +1,12 @@
 import styled from "styled-components"
-import ImageSlider from "../components/ImageSlider"
+import ImageSlider from "../components/HomePage/ImageSlider"
 import { useEffect, useState } from "react"
-import CamporiContainer from "../components/CamporisContainer"
+import CamporiContainer from "../components/HomePage/CamporisContainer"
 import MembersContainer from "../components/MembersContainer"
 import { useAuth } from "../hooks/useAuth"
 import { Link } from "react-router-dom"
 import { SideBar } from "../components/Sidebar"
+import UnidadesContainer from "../components/HomePage/UnidadesContainer"
 
 const HomePage = () => {
     const { logout, getUser } = useAuth()
@@ -57,7 +58,7 @@ const HomePage = () => {
                                 <a href="http://localhost:5174/redirect?for=http://localhost:5173/profile">
                                     <button className="btn hoverAnim1" style={{ background: 'var(--first-color)', color: '#fff' }}>Fazer Login</button>
                                 </a>
-                                <button className="btn hoverAnim1" style={{ background: 'var(--fourth-color)' }}>Seja um Desbravador</button>
+                                <Link to='/sejadesbravador'><button className="btn hoverAnim1" style={{ background: 'var(--fourth-color)' }}>Seja um Desbravador</button></Link>
                             </>:
                             <>
                                 <Link to='/profile'>
@@ -107,7 +108,7 @@ const HomePage = () => {
                             <a href="#inicio"><button className="btn hoverAnim1" style={{ backgroundColor: 'var(--first-color)', color: 'var(--white)' }}>Início</button></a>
                             <a href="#camporis"><button className="btn hoverAnim1" style={{ backgroundColor: 'var(--first-color)', color: 'var(--white)' }}>Camporis</button></a>
                             <a href="#members"><button className="btn hoverAnim1" style={{ backgroundColor: 'var(--first-color)', color: 'var(--white)' }}>Membros</button></a>
-                            <button className="btn hoverAnim1" style={{ backgroundColor: 'var(--fourth-color)' }}>Unidades</button>
+                            <a href="#unidades"><button className="btn hoverAnim1" style={{ backgroundColor: 'var(--fourth-color)' }}>Unidades</button></a>
                             <button className="btn hoverAnim1" style={{ backgroundColor: 'var(--black)', color: 'var(--white)' }}>Nos apoie</button>
                         </div>
                     </section>
@@ -116,6 +117,7 @@ const HomePage = () => {
 
             <CamporiContainer/>
             <MembersContainer/>
+            <UnidadesContainer/>
 
             <SideBar
                 user={user}

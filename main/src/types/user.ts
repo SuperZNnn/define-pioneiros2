@@ -17,10 +17,28 @@ export type User = {
     reg: number,
     status: number,
     sgc_code: number,
-    pix: string
+    pix: string,
+    unidade: number
 }
 export type DisplayInfo = {
     display_name: string
     origin_id: number
     photo?:string 
 }
+export type CepReturn = {
+    bairro: string
+    cep: string
+    complemento: string
+    ddd: string
+    estado: string
+    gia: string,
+    ibge: string,
+    localidade: string,
+    logradouro: string,
+    regiao: string,
+    siafi: string,
+    uf: string,
+    unidade: string
+}
+
+export const AdmFuncs = ['Diretor', 'Diretora', 'Diretor Associado', 'Diretora Associada', 'Secretário', 'Secretária']

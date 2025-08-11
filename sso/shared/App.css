@@ -91,6 +91,7 @@ a{
   font-family: 'Inter', sans-serif;
   cursor: pointer;
   transition: .2s;
+  outline: none;
 
   &:not(.noradius){
     border-radius: .5vh;

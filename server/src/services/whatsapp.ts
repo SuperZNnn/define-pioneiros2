@@ -2,12 +2,20 @@ import { Request, Response } from "express"
 import Whatsapp, { Client, MessageMedia } from 'whatsapp-web.js'
 import qrcode from 'qrcode'
 import { Router } from 'express';
-import { generateBdayPhoto } from "./generators";
+import { generateBdayPhoto, getIdade } from "./generators";
 import { WhatsAppReplys } from "./whatsappReplys";
 
 const client = new Client({
     puppeteer: {
-        headless: false
+        headless: false,
+        args: [
+            '--no-sandbox',
+            '--disable-setuid-sandbox',
+            '--disable-dev-shm-usage',
+            '--disable-gpu',
+            '--no-zygote',
+            '--single-process'
+        ]
     },
 
     authStrategy: new Whatsapp.LocalAuth()
@@ -63,6 +71,39 @@ WhatsappRouter.get('/whatsapp/qrcode', async (req: Request, res: Response) => {
         res.status(500).send('Erro interno')
     }
 })
+
+export const newBePathfinderMessage = async (data: {bairro?: string, city: string, name: string, nascimento: string, rua?: string, state: string, email?: string, phone: string, respPhone?: boolean}) => {
+    try{
+        if (clientReady){
+            const idade = getIdade(data.nascimento)
+
+            let text = `*Novo Interessado*
+*Informações Pessoais*
+*Nome*: ${data.name}
+*Nascimento*: ${data.nascimento}
+*Idade*: ${idade}
+
+*Localidade*
+*Cidade*: ${data.city} - ${data.state}`
+            if (data.bairro) text += `\n*Bairro*: ${data.bairro}`
+            if (data.rua) text += `\n*Rua*: ${data.rua}`
+            
+            text += `\n\n*Contato*
+*Celular*: ${data.phone} ${data.respPhone?'(Responsável)':''}`
+            if (data.email) text += `*Email*: \n${data.email}`
+
+            await client.sendMessage(`${process.env.DIRETOR_PHONE}@c.us`, text)
+            return {message: 'Success'}
+        }
+        else{
+            setTimeout(() => {newBePathfinderMessage(data)}, 500)
+        }
+    }
+    catch(err){
+        throw err
+    }
+}
+
 export const sendBdayMessage = async (userid: number, name: string, funcao: string, gender: 'f'|'m') => {
     const imageBuffer = await generateBdayPhoto(userid)
     const chatId = `${process.env.TEST_PHONE}@c.us`

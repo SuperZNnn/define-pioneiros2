@@ -1,7 +1,10 @@
 import { Router } from "express";
 import { SsoController } from "../controller/ssoController";
+import { CorsPermission } from "../middlewares/corspermission";
 
 const SsoRouter = Router()
+
+SsoRouter.use(CorsPermission)
 
 SsoRouter.get('/sso/validateRedirect', SsoController.validateRedirect)
 SsoRouter.get('/sso/validateToken/:token', SsoController.validateCode)

@@ -7,7 +7,8 @@ import { convertToBRL, formatCentavos } from "../hooks/useConvert"
 
 type Transaction = {
     external: number,
-    amount: string
+    amount: string,
+    is_system: boolean
 }
 
 const PixManager = ({quitSession, userId}: { quitSession: () => void, userId: number }) => {
@@ -27,17 +28,19 @@ const PixManager = ({quitSession, userId}: { quitSession: () => void, userId: nu
 
             PixEvents.getTransactions()
             .then(res=>{
-                const resData = res.data as { recieves: { from: number, to: number, value: string }[], sends: { from: number, to: number, value: string }[] }
+                const resData = res.data as { recieves: { from: number, to: number, value: string, from_system: number }[], sends: { from: number, to: number, value: string, from_system: number }[] }
                 setSendedHistory(
-                    resData.sends.map(item => ({
+                    resData.sends.filter(item => item.from_system !== 1).map(item => ({
                         external: item.to,
-                        amount: item.value
+                        amount: item.value,
+                        is_system: item.from_system === 2
                     }))
                 )
                 setRecievedHistory(
-                    resData.recieves.map(item => ({
+                    resData.recieves.filter(item => item.from_system !== 2).map(item => ({
                         external: item.from,
-                        amount: item.value
+                        amount: item.value,
+                        is_system: item.from_system === 1
                     }))
                 )
             })
@@ -75,6 +78,7 @@ const PixManager = ({quitSession, userId}: { quitSession: () => void, userId: nu
                                     amount={item.amount}
                                     externalId={item.external}
                                     usersList={usersList??[]}
+                                    isSystem={item.is_system}
                                 />
                             ))}
                         </div>
@@ -94,6 +98,7 @@ const PixManager = ({quitSession, userId}: { quitSession: () => void, userId: nu
                                     amount={item.amount}
                                     externalId={item.external}
                                     usersList={usersList??[]}
+                                    isSystem={item.is_system}
                                 />
                             ))}
                         </div>
@@ -119,7 +124,7 @@ const PixManager = ({quitSession, userId}: { quitSession: () => void, userId: nu
 
                         setSendedHistory([
                             ...sendedHistory,
-                            {external: to, amount: `${formatCentavos(amount)}`}
+                            {external: to, amount: `${formatCentavos(amount)}`, is_system: false}
                         ])
                     }
                 })
@@ -136,7 +141,7 @@ const PixManager = ({quitSession, userId}: { quitSession: () => void, userId: nu
 }
 export default PixManager
 
-const LineGenerator = ({amount, externalId, usersList}: { usersList: User[], amount: string, externalId: number}) => {
+const LineGenerator = ({amount, externalId, usersList, isSystem}: { isSystem: boolean, usersList: User[], amount: string, externalId: number}) => {
     const [name, setName] = useState<string | undefined>('')
     
     useEffect(() => {
@@ -147,7 +152,7 @@ const LineGenerator = ({amount, externalId, usersList}: { usersList: User[], amo
     return (
         <div className="line">
             <p className="simple-text">{convertToBRL(amount)}</p>
-            <p className="simple-text">{name}</p>
+            {isSystem?<p className="simple-text"><b>SISTEMA</b></p>:<p className="simple-text">{name}</p>}
         </div>
     )
 }

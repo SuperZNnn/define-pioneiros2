@@ -12,7 +12,7 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import ImageCropper from "../../components/Cropper"
 import { useAuth } from "../../hooks/useAuth"
 import { useToasts } from "../../hooks/useToasts"
-import { AdmFuncs } from "./TokensManager"
+import { AdmFuncs } from "../../types/user"
 
 const MembersListPage = () => {
     const { getUser } = useAuth()
@@ -292,6 +292,7 @@ export const MemberEditModal = () => {
                                 value={watch("telefone")}
                                 className="ipt-basic border"
                                 placeholder="Telefone"
+                                inputMode="numeric"
                                 />
                             </div>
 
@@ -305,6 +306,7 @@ export const MemberEditModal = () => {
                                 value={watch("telefone_responsavel")}
                                 className="ipt-basic border"
                                 placeholder="Telefone do Responsável"
+                                inputMode="numeric"
                                 />
                             </div>
 

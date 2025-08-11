@@ -4,7 +4,7 @@ import styled from "styled-components"
 import { useAuth } from "../hooks/useAuth"
 import type { User } from "../types/user"
 import { ApiRequests } from "../services/api"
-import { AdmFuncs } from "../pages/admPages/TokensManager"
+import { AdmFuncs } from "../types/user"
 
 export const SideBar = ({user, logout}: { user: number | undefined, logout: () => void }) => {
     const [showSidebar, setShowSidebar] = useState<boolean>(false)
@@ -28,7 +28,7 @@ export const SideBar = ({user, logout}: { user: number | undefined, logout: () =
                 <a href="#camporis"><button className="btn noradius" style={{ width: '100%' }}>Camporis</button></a>
                 <a href="#members"><button className="btn noradius" style={{ width: '100%' }}>Membros</button></a>
                 
-                <a><button className="btn noradius" style={{ width: '100%', marginTop: '1vh' }}>Unidades</button></a>
+                <a href="#unidades"><button className="btn noradius" style={{ width: '100%', marginTop: '1vh' }}>Unidades</button></a>
                 <a><button className="btn noradius" style={{ width: '100%' }}>Nos apoie</button></a>
             </SidebarStyle>
 
@@ -76,7 +76,8 @@ export const LoggedSidebar = () => {
                 {AdmFuncs.includes(user?.funcao??'')?
                     <BurgerList title="Secretaria">
                         <Link to='/secretaria/membros'><button className="btn noradius" style={{ width: '100%', height: '5vh' }}>Membros</button></Link>
-                        <a><button className="btn noradius" style={{ width: '100%', height: '5vh' }}>Gerenciador DesbravaPix</button></a>
+                        <Link to='/desbravapix'><button className="btn noradius" style={{ width: '100%', height: '5vh' }}>Gerenciador DesbravaPix</button></Link>
+                        <Link to='/secretaria/unidades'><button className="btn noradius" style={{ width: '100%', height: '5vh' }}>Unidades</button></Link>
                     </BurgerList>
                 :null}
 

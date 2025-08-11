@@ -18,16 +18,34 @@ model reg_users {
 }
 
 model pix_history {
-  transaction_id    Int     @id @default(autoincrement())
-  from              Int
-  to                Int
-  value             Decimal @db.Decimal(10,2)
+  transaction_id Int     @id @default(autoincrement())
+  from           Int
+  to             Int
+  value          Decimal @db.Decimal(10, 2)
+  from_system    Int?
 
-  from_user         users   @relation("PixFrom", fields: [from], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  to_user           users   @relation("PixTo", fields: [to], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  from_user users @relation("PixFrom", fields: [from], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  to_user   users @relation("PixTo", fields: [to], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@index([from])
   @@index([to])
+}
+
+model unidade_info {
+  un_id Int    @id @default(autoincrement())
+  name  String @db.VarChar(50)
+  photo Bytes? @db.LongBlob
+
+  members unidade_member[] @relation("Unidade")
+}
+
+model unidade_member {
+  member_id   Int    @unique
+  unidade_cod Int
+  cargo       String @db.VarChar(30)
+
+  ref_unidade unidade_info @relation("Unidade", fields: [unidade_cod], references: [un_id], onDelete: NoAction, onUpdate: NoAction)
+  ref_member  users        @relation("Member", fields: [member_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model token_manager {
@@ -41,28 +59,30 @@ model token_manager {
 }
 
 model users {
-  id                   Int             @id @default(autoincrement())
-  fullname             String          @db.VarChar(255)
-  cpf                  String?         @db.VarChar(14)
-  rg                   String?         @db.VarChar(10)
-  telefone             String?         @db.VarChar(14)
-  telefone_responsavel String?         @db.VarChar(14)
-  email                String?         @db.VarChar(255)
-  email_responsavel    String?         @db.VarChar(255)
-  responsavel          String?         @db.VarChar(255)
-  mae                  String?         @db.VarChar(255)
-  pai                  String?         @db.VarChar(255)
-  nascimento           DateTime        @db.Date
-  funcao               String          @db.VarChar(30)
-  genero               String          @db.VarChar(1)
+  id                   Int      @id @default(autoincrement())
+  fullname             String   @db.VarChar(255)
+  cpf                  String?  @db.VarChar(14)
+  rg                   String?  @db.VarChar(10)
+  telefone             String?  @db.VarChar(14)
+  telefone_responsavel String?  @db.VarChar(14)
+  email                String?  @db.VarChar(255)
+  email_responsavel    String?  @db.VarChar(255)
+  responsavel          String?  @db.VarChar(255)
+  mae                  String?  @db.VarChar(255)
+  pai                  String?  @db.VarChar(255)
+  nascimento           DateTime @db.Date
+  funcao               String   @db.VarChar(30)
+  genero               String   @db.VarChar(1)
   photo                Bytes?
-  reg                  Int             @default(0)
-  status               Int             @default(1)
-  sgc_code             Int             @default(0)
-  pix                  Decimal         @default(0.00) @db.Decimal(10,2)
+  reg                  Int      @default(0)
+  status               Int      @default(1)
+  sgc_code             Int      @default(0)
+  pix                  Decimal  @default(0.00) @db.Decimal(10, 2)
+  unidade              Int?
 
-  reg_users            reg_users?
-  token_manager        token_manager[]
-  sent_pix             pix_history[]   @relation("PixFrom")
-  received_pix         pix_history[]   @relation("PixTo")
+  reg_users       reg_users?
+  token_manager   token_manager[]
+  sent_pix        pix_history[]    @relation("PixFrom")
+  received_pix    pix_history[]    @relation("PixTo")
+  unidade_members unidade_member[] @relation("Member")
 }
