@@ -1,24 +1,24 @@
-import { useEffect } from 'react'
-import { useLocation } from 'react-router-dom'
-import { styled } from 'styled-components'
-import FormWrapper from '../components/forms/FormWrapper'
+import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import { styled } from 'styled-components';
+import FormWrapper from '../components/forms/FormWrapper';
 
 const HomePage = () => {
-    const location = useLocation()
+    const location = useLocation();
 
     useEffect(() => {
-        if (!location.state){
-            window.location.href = 'https://pioneirosdoadvento.com'
+        if (!location.state) {
+            window.location.href = 'https://pioneirosdoadvento.com';
         }
-    }, [])
+    }, []);
 
     return (
         <PageStyle>
-            <FormWrapper/>
+            <FormWrapper />
         </PageStyle>
-    )
-}
-export default HomePage
+    );
+};
+export default HomePage;
 
 const PageStyle = styled.main`
     background-image: url('https://pioneirosdoadvento.com/assets/images/sso_bg.jpg');
@@ -30,4 +30,4 @@ const PageStyle = styled.main`
     display: flex;
     justify-content: center;
     align-items: center;
-`
+`;
