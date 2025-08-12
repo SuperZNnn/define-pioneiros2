@@ -5,7 +5,6 @@ import type { User } from '../types/users';
 import { useToasts } from '../hooks/useToasts';
 import { UsersEvents } from '../services/api';
 
-// Mock dos hooks e serviços
 vi.mock('../hooks/useToasts');
 vi.mock('../services/api');
 
@@ -187,7 +186,6 @@ describe('WaySelector Component', () => {
     });
 
     it('disables button during API call and re-enables after', async () => {
-        // Criamos uma promise que podemos resolver manualmente
         let resolvePromise: () => void;
         const promise = new Promise<void>((resolve) => {
             resolvePromise = resolve;
@@ -204,15 +202,12 @@ describe('WaySelector Component', () => {
         );
 
         render(<WaySelector user={mockUser} />);
-
         const emailButton = screen.getByRole('button', { name: /seu E-mail/i });
 
         fireEvent.click(emailButton);
-
         expect(emailButton).toBeDisabled();
 
         await promise;
-
         await waitFor(() => {
             expect(emailButton).not.toBeDisabled();
         });
