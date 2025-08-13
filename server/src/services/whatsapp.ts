@@ -7,7 +7,7 @@ import { WhatsAppReplys } from "./whatsappReplys";
 
 const client = new Client({
     puppeteer: {
-        headless: false,
+        headless: true,
         args: [
             '--no-sandbox',
             '--disable-setuid-sandbox',
@@ -156,6 +156,6 @@ export const sendBdayMessage = async (userid: number, name: string, funcao: stri
         console.log(err)
     }
 }
-client.initialize()
+//client.initialize()
 
 export default WhatsappRouter

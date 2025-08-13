@@ -1,6 +1,8 @@
 */.env
 */node_modules
 */dist
+.next
+next-env.d.ts
 
 server/src/generated/prisma
 server/.wwebjs_auth

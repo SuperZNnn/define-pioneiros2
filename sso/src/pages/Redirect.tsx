@@ -7,13 +7,14 @@ const RedirectPage = () => {
 
     const [searchParams] = useSearchParams();
     const redirectUrl = searchParams.get('for');
+    const isForgot = searchParams.get('forgot')
 
     useEffect(() => {
         if (redirectUrl) {
             ApiRequests.verifyUrl(redirectUrl)
                 .then((res) => {
                     if (res.status === 200) {
-                        navigate('/', { state: { redirectUrl } });
+                        navigate(`/${isForgot?'?f=1':''}`, { state: { redirectUrl } });
                     }
                 })
                 .catch(() => {

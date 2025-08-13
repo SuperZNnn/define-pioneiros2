@@ -1,0 +1,12 @@
+@font-face {
+    font-family: 'NeueMachina';
+    src: url('/assets/fonts/NeueMachina-Ultrabold.otf');
+}
+
+.main-title{
+    font-family: 'NeueMachina' !important;
+}
+
+p.simple-warn{
+    color: #800000
+}

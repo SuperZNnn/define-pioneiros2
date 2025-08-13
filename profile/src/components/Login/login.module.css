@@ -1,0 +1,95 @@
+.main{
+  background-color: var(--fifth-color);
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: space-evenly;
+
+  @media (max-width: 750px){
+    flex-direction: column-reverse;
+    align-items: center;
+  }
+
+  section{
+    width: 40%;
+
+    @media (max-width: 750px){
+        width: 80%;
+    }
+  }
+}
+
+.form_container{
+  background-color: var(--black);
+  width: 100%;
+  padding: 2vh;
+  border-radius: 2vh;
+  
+  input{
+    width: 100%;
+    padding: 2vh !important;
+    font-size: 1.3rem;
+  }
+  button{
+    font-size: 1.3rem
+  }
+
+}
+.form{
+  gap: 1vh;
+  button{
+    width: 100%;
+    background-color: var(--first-color);
+    color: var(--white);
+    padding: 2vh 1vh;
+  }
+  p.forgotpassword{
+    font-size: 1rem;
+    color: var(--white);
+    text-decoration: underline;
+  }
+}
+
+.side_actions{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.create_account{
+  border-top: .3vh solid rgba(255,255,255,.3);
+  margin-top: 2vh;
+  padding-top: 2vh;
+
+  button{
+    background-color: var(--fourth-color);
+    padding: 2vh;
+  }
+}
+
+.side_brand{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1vh;;
+  background-color: rgba(255,255,255,.3);
+
+  @media (max-width: 570px){
+    display: none;
+  }
+
+  h2,h1,p{
+    color: var(--white);
+  }
+  h2{
+    
+    margin-top: 2vh;
+    font-size: 1.2rem
+  }
+  p{
+    width: 90%; 
+    text-align: justify;
+    margin-top: 2vh
+  }
+}

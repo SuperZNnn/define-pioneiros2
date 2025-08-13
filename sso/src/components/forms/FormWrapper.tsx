@@ -6,9 +6,13 @@ import ImageSlider from '../ImageSlider/ImageSlider';
 import MemberCard from '../MemberCard';
 import { type User } from '../../types/users';
 import WaySelector from '../WaySelector';
+import { useSearchParams } from 'react-router-dom';
 
 const FormWrapper = () => {
-    const [formType, setFormType] = useState<boolean>(false);
+    const [searchParams] = useSearchParams()
+    const forgotpassword = searchParams.get('f')
+
+    const [formType, setFormType] = useState<boolean>(forgotpassword?true:false);
     const [showUser, setShowUser] = useState<User | undefined>();
 
     useEffect(() => {
