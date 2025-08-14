@@ -8,6 +8,10 @@ export const CorsPermission = (req: Request, res: Response, next: NextFunction) 
   const isOriginAllowed = origin && allowedOrigins.includes(origin)
   const isRefererAllowed = referer && allowedOrigins.some(url => referer.startsWith(url))
 
+  if (!origin && !referer) {
+    return next();
+  }
+
   if (isOriginAllowed || isRefererAllowed){
     next()
   }

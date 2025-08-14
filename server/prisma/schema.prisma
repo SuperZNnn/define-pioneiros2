@@ -79,6 +79,7 @@ model users {
   sgc_code             Int      @default(0)
   pix                  Decimal  @default(0.00) @db.Decimal(10, 2)
   unidade              Int?
+  username             String?  @unique @db.VarChar(30)
 
   reg_users       reg_users?
   token_manager   token_manager[]

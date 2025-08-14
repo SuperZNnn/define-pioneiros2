@@ -183,16 +183,28 @@ export class UsersController {
 
     static async getUser (req: Request, res: Response){
         const { id } = req.params
+        const { username } = req.query
 
         try{
             const sessionToken = req.cookies.pdaSessionCookie
             const jwtkey = process.env.JWT_KEY
-
-            const user = await prisma.users.findUnique({
-                where: {
-                    id: Number(id)
-                }
-            })
+            
+            let user
+            if (username){
+                user = await prisma.users.findUnique({
+                    where: {
+                        username: id
+                    }
+                })
+            }
+            else{
+                user = await prisma.users.findUnique({
+                    where: {
+                        id: Number(id)
+                    }
+                })
+            }
+            
             const jwtUser = jwt.verify(sessionToken, `${jwtkey}`) as { exp: number, iat: number, userId: number }
 
             const formattedUsers = {
@@ -218,7 +230,14 @@ export class UsersController {
                     res.status(200).json({ message: 'Autorizado', user: formattedUsers })
                 }
                 else{
-                    res.status(401).json({ message: 'Não autorizado' })
+                    res.status(200).json({ message: 'Parcialmente autorizado', user: {
+                        fullname: formattedUsers.fullname,
+                        nascimento: formattedUsers.nascimento,
+                        funcao: formattedUsers.funcao,
+                        genero: formattedUsers.genero,
+                        unidade: formattedUsers.unidade,
+                        photo: formattedUsers.photo
+                    } })
                 }
             }
         }
@@ -249,6 +268,44 @@ export class UsersController {
                 res.status(401).json({ message: 'Não autorizado' })
             }
             
+        }
+        catch (err){
+            res.status(500).send(err)
+        }
+    }
+    static async getDisplayById (req: Request, res: Response){
+        const { userId } = req.params
+        const { username } = req.query
+
+        try{
+            let user
+            if (username){
+                const tempUser = await prisma.users.findUnique({
+                    where: {
+                        username: userId
+                    },
+                    select: {
+                        reg_users: {
+                            select: {
+                                display_name: true
+                            }
+                        }
+                    }
+                })
+                user = tempUser?.reg_users
+            }
+            else{
+                user = await prisma.reg_users.findUnique({
+                    where: {
+                        origin_id: Number(userId)
+                    },
+                    select: {
+                        display_name: true
+                    }
+                })
+            }
+            
+            res.status(200).json({ user })
         }
         catch (err){
             res.status(500).send(err)

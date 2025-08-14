@@ -61,7 +61,7 @@
   margin-top: 2vh;
   padding-top: 2vh;
 
-  button{
+  button.create_account{
     background-color: var(--fourth-color);
     padding: 2vh;
   }
