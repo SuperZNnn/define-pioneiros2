@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { SsoController } from "../controller/ssoController";
 import { CorsPermission } from "../middlewares/corspermission";
+import { allowByCookie } from "../middlewares/system";
 
 const SsoRouter = Router()
 
@@ -17,7 +18,7 @@ SsoRouter.post('/sso/firebaseLogin', SsoController.firebaseLogin)
 SsoRouter.post('/sso/createSessionByToken/:token', SsoController.createSessionByToken)
 
 SsoRouter.put('/sso/resetPassword', SsoController.resetPassword)
-SsoRouter.put('/sso/changeInfo/:userId', SsoController.changeInfos)
+SsoRouter.put('/sso/changeInfo/:userId', allowByCookie, SsoController.changeInfos)
 
 SsoRouter.delete('/sso/destroySession', SsoController.destroySession)
 

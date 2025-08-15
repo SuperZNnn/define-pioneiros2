@@ -242,6 +242,29 @@ export class UsersController {
             }
         }
         catch(err){
+            const errData = err as { name: string, message: string }
+
+            if (errData.message === 'jwt must be provided'){
+                const user = await prisma.users.findUnique({
+                    where: {
+                        username: id
+                    }
+                })
+                const formattedUsers = {
+                    ...user,
+                    photo: user?.photo ? Buffer.from(user.photo).toString('base64') : null
+                }
+                res.status(200).json({ message: 'Parcialmente autorizado', user: {
+                    fullname: formattedUsers.fullname,
+                    nascimento: formattedUsers.nascimento,
+                    funcao: formattedUsers.funcao,
+                    genero: formattedUsers.genero,
+                    unidade: formattedUsers.unidade,
+                    photo: formattedUsers.photo
+                } })
+                return
+            }
+
             res.status(500).send(err)
         }
     }
@@ -287,7 +310,8 @@ export class UsersController {
                     select: {
                         reg_users: {
                             select: {
-                                display_name: true
+                                display_name: true,
+                                banner: true
                             }
                         }
                     }
@@ -300,12 +324,22 @@ export class UsersController {
                         origin_id: Number(userId)
                     },
                     select: {
-                        display_name: true
+                        display_name: true,
+                        banner: true
                     }
                 })
             }
+
+            const formattedUsers = {
+                ...user,
+                banner: user?.banner ? Buffer.from(user.banner).toString('base64') : null
+            }
             
-            res.status(200).json({ user })
+            if (!user?.display_name){
+                res.status(404).json({ message: 'Not found' })
+            }
+
+            res.status(200).json({ user: formattedUsers })
         }
         catch (err){
             res.status(500).send(err)

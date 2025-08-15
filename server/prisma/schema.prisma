@@ -14,7 +14,9 @@ model reg_users {
   password     String  @db.VarChar(200)
   display_name String? @db.VarChar(50)
   is_old       Int     @default(0)
-  users        users   @relation(fields: [origin_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "reg_users_ibfk_1")
+  banner       Bytes?
+
+  users users @relation(fields: [origin_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "reg_users_ibfk_1")
 }
 
 model pix_history {

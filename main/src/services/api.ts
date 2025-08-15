@@ -83,7 +83,8 @@ export class UserEvents {
         }
 
         return axios.put(`${apiPrefix}/sso/changeInfo/${userId}`, formData, {
-            headers: { 'Content-Type': 'multipart/form-data' }
+            headers: { 'Content-Type': 'multipart/form-data' },
+            withCredentials: true
         })
     }
 

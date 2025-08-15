@@ -6,8 +6,42 @@
     justify-content: center;
 }
 
+.image_container{
+    
+    .edit_icon{
+        position: absolute;
+        background-color: var(--fourth-color);
+        padding: 1vh;
+        border-radius: 50% !important;
+        cursor: pointer;
+
+        transform: translate(150px, -160px);
+        @media (max-width: 1100px){
+            transform: translate(110px, -100px);
+        }
+        @media (max-width: 550px){
+            transform: translate(70px, -45px);
+        }
+
+        img{
+            width: 3vh;
+            height: 3vh;
+            @media (max-width: 550px){
+                width: 2vh;
+                height: 2vh;
+            }
+        }
+    }
+}
+
 .editbanner{
     transform: translate(935px,-43px);
+
+    @media (max-width: 1100px){
+        position: relative;
+        left: 50%;
+        transform: translate(-50%,-43px)
+    }
 
     display: flex;
     align-items: center;
@@ -29,6 +63,11 @@
             height: 200px;
             object-fit: cover;
             border-radius: 0 0 10px 10px;
+
+            @media (max-width: 1100px){
+                width: 99vw;
+                height: 17vw;
+            }
         }
     }
     .profile{
@@ -39,23 +78,61 @@
         display: flex;
         gap: 2vh;
 
-        img{
+        @media (max-width: 550px){
+            padding: 1vh 2vh;
+        }
+        @media (max-width: 350px){
+            padding: 0 2vh;
+        }
+
+        img.profile_img{
             width: 200px;
             height: 200px;
             object-fit: cover;
             position: relative;
+            aspect-ratio: 1/1;
             top: -105px;
             border-radius: 50%;
-            border: .5vh solid var(--first-color)
+            border: .5vh solid var(--first-color);
+
+            @media (max-width: 1100px){
+                width: 150px;
+                height: 150px;
+                top: -55px;
+            }
+            @media (max-width: 550px){
+                width: 100px;
+                height: 100px;
+                top: -2px;
+                border-color: var(--white);
+            }
+            @media (max-width: 350px){
+                top: .5vh
+            }
         }
 
         .text{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
             h3{
                 color: var(--white);
                 font-size: 1.8rem;
+
+                @media (max-width: 550px){
+                    font-size: 1.1rem;
+                }
             }
-            h4{
-                color: var(--white)
+            h4{ 
+                color: var(--white);
+                @media (max-width: 550px){
+                    font-size: .8rem;
+                    text-align: center !important;
+                }
+                @media (max-width: 300px){
+                    display: none;
+                }
             }
         }
 

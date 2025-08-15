@@ -8,7 +8,11 @@ import { verifyIdToken } from "../services/firebase";
 import multer from 'multer'
 import { internalCreateToken } from "../services/TokenService";
 
-const upload = multer().single('photo')
+const upload = multer({ storage: multer.memoryStorage() })
+const uploadImages = upload.fields([
+    { name: 'photo', maxCount: 1 },
+    { name: 'banner', maxCount: 1 },
+])
 
 export class SsoController{
     static async validateRedirect (req: Request, res: Response){
@@ -223,13 +227,15 @@ export class SsoController{
         }
     }
     static async changeInfos (req: Request, res: Response){
-        upload(req, res, async (err) =>{
+        uploadImages(req, res, async (err) =>{
             const { login, display_name } = req.body
-            const photo = req.file?.buffer
+            const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+            const photo = files?.photo?.[0]?.buffer;
+            const banner = files?.banner?.[0]?.buffer;
             const { userId } = req.params
 
             try{
-                if (login||display_name||photo){
+                if (login||display_name||photo||banner){
                     if (login){
                         await prisma.reg_users.update({
                             where: {
@@ -258,6 +264,16 @@ export class SsoController{
                             },
                             data: {
                                 photo: photo
+                            }
+                        })
+                    }
+                    if (banner){
+                        await prisma.reg_users.update({
+                            where: {
+                                origin_id: Number(userId)
+                            },
+                            data: {
+                                banner: banner
                             }
                         })
                     }

@@ -14,7 +14,9 @@ export const getServerSession = async () => {
                 Cookie: `pdaSessionCookie=${sessionCookie}`,
             },
         });
-        return res.status === 200 ? res.data as { message: string, user: SessionReturn } : null;
+        return res.status === 200
+            ? (res.data as { message: string; user: SessionReturn })
+            : null;
     } catch {
         return null;
     }
