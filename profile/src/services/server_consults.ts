@@ -46,3 +46,16 @@ export class ProfileEvents {
         }
     }
 }
+
+export class UsersEvents {
+    static async getAllMembers () {
+        try{
+            const response = await axios.get(`${apiPrefix}/users?wphoto=1`)
+            return response.data as User[] 
+        }
+        catch (err){
+            console.log(err)
+            redirect('/profile')
+        }
+    }
+}

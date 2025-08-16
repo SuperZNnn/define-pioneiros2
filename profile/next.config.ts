@@ -8,6 +8,12 @@ const nextConfig: NextConfig = {
         hostname: 'pioneirosdoadvento.com',
         port: '',
         pathname: '**'
+      },
+      {
+        protocol: 'https',
+        hostname: 'sso.pioneirosdoadvento.com',
+        port: '',
+        pathname: '**'
       }
     ]
   }

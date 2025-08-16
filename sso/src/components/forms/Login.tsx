@@ -163,9 +163,7 @@ const LoginForm = ({
                             type='button'
                             className='btn form yellow resp1'
                             onClick={() => {
-                                navigate('/register', {
-                                    state: location.state,
-                                });
+                                window.open('http://localhost:4000/register')
                             }}
                         >
                             Registre-se

@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import { ToastProvider } from '@/hooks/useToasts';
+import { ToastsContainer } from '@/components/Toasts';
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -23,9 +25,15 @@ export default function RootLayout({
                     rel='stylesheet'
                     href='http://localhost:5174/shared/App.css'
                 />
+                <link rel="icon" type="image/svg+xml" href="https://pioneirosdoadvento.com/assets/images/logo.png" />
             </head>
 
-            <body>{children}</body>
+            <body>
+                <ToastProvider>
+                    <ToastsContainer/>
+                    {children}
+                </ToastProvider>
+            </body>
         </html>
     );
 }

@@ -34,3 +34,19 @@ export class ImageEvents {
         })
     }
 }
+
+export class UsersEvents {
+    static async sendRegisterEmail(userId: number, resp: boolean) {
+        return axios.post(`${apiPrefix}/sso/createToken?resp=${resp}`, {
+            userId,
+            type: 1,
+        });
+    }
+
+    static async sendResetPasswordEmail(userId: number, resp: boolean) {
+        return axios.post(`${apiPrefix}/sso/createToken?resp=${resp}`, {
+            userId,
+            type: 2,
+        });
+    }
+}
